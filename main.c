@@ -30,6 +30,23 @@ int findMax(int arr[]) {
     return max;
 }
 
+void printResults(int arr[], int max, int min,int sum, float average) {
+    printf("배열 분석 결과\n");
+
+    // 원래 배열 출력
+    printf("1. 입력된 배열: [ ");
+    for (int i = 0; i < SIZE; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("]\n");
+
+    // 분석 결과 출력
+    printf("2. 최댓값 (팀원 2): %d\n", max);
+    printf("3. 최솟값 (팀원 3): %d\n", min);
+    printf("4. 합계   (팀원 4): %d\n", sum);
+    printf("5. 평균   (팀원 4): %.2f\n", average);
+}
+
 int main(void){
  int numbers[SIZE];
  int maxResult,minResult;
