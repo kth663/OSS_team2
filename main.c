@@ -47,6 +47,17 @@ void printResults(int arr[], int max, int min,int sum, float average) {
     printf("5. 평균   (팀원 4): %.2f\n", average);
 }
 
+int findSum(int arr[]) {
+    int sum = 0;
+
+    for (int i = 0; i < SIZE; i++) {
+        sum += arr[i];
+    }
+
+    return sum;
+}
+
+
 int main(void){
  int numbers[SIZE];
  int maxResult,minResult;
@@ -67,12 +78,3 @@ printfResults(numbers,maxResult,minResult,sum,average);
   return 0;
 }
 
-int findSum(int arr[]) {
-    int sum = 0;
-
-    for (int i = 0; i < SIZE; i++) {
-        sum += arr[i];
-    }
-
-    return sum;
-}
