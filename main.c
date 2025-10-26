@@ -20,14 +20,14 @@ int findMax(int arr[]) {
     return max;
 }
 
-int findMax(int arr[]) {
-    int max = arr[0];
+int findMin(int arr[]) {
+    int min = arr[0];
     for (int i = 1; i < SIZE; i++) {
-        if (arr[i] > max) {
-            max = arr[i];
+        if (arr[i] < min) {
+            min = arr[i];
         }
     }
-    return max;
+    return min;
 }
 
 void printResults(int arr[], int max, int min,int sum, float average) {
