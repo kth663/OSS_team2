@@ -18,5 +18,20 @@ int maze(){
         fscanf_s(mazeFile,"%c", &temp, 1); 
     }
 
-    
+    for(int i = 0;i<27;i++){
+        for(int j= 0;j<27;j++){
+            char ch = map[i][j];
+            if(ch == 'X'){
+                printf("■ ");
+            }
+            else if(ch == 'O'){
+                printf("  ");
+            }
+            else{
+                printf("%c ", ch);
+            }
+        }
+        printf("\n");
+    }
+
 }
