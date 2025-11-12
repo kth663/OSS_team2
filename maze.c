@@ -2,8 +2,21 @@
 #include<stdlib.h>
 #include<windows.h>
 #include<locale.h>
+#include<conio.h>
 
 void setCursorPos(int x,int y);
+
+void printShape(char ch){
+    if(ch == 'X'){
+        printf("■ ");
+    }
+    else if(ch == 'O'){
+        printf("  ");
+    }
+    else{
+        printf("%c ", ch);
+    }
+}
 
 int maze(){
     
@@ -31,15 +44,7 @@ int maze(){
     for(int i = 0;i<27;i++){
         for(int j= 0;j<27;j++){
             char ch = map[i][j];
-            if(ch == 'X'){
-                printf("■ ");
-            }
-            else if(ch == 'O'){
-                printf("  ");
-            }
-            else{
-                printf("%c ", ch);
-            }
+            printShape(ch);
         }
         printf("\n");
     }
@@ -50,6 +55,32 @@ int maze(){
     setCursorPos(x, y);
 
     printf("● ");
+
+    while(1){
+        char input = _getch();
+        int nx = x;
+        int ny = y;
+        if(input == 'w'){
+            ny--;
+        }
+        else if(input == 's'){
+            ny++;
+        }
+        else if(input == 'a'){
+            nx--;
+        }
+        else if(input == 'd'){
+            nx++;
+        }
+
+        setCursorPos(x, y);
+        printShape(map[y][x]);
+        setCursorPos(nx, ny);
+        printf("● ");
+
+        x = nx;
+        y = ny;
+    }
     
 
 }
