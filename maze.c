@@ -73,6 +73,10 @@ int maze(){
             nx++;
         }
 
+        if(map[ny][nx] == 'X'){
+            continue;
+        }
+
         setCursorPos(x, y);
         printShape(map[y][x]);
         setCursorPos(nx, ny);
