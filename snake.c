@@ -3,6 +3,18 @@
 #include<windows.h>
 #include<locale.h>
 
+
+typedef struct snake{
+    int x;
+    int y;
+
+    struct snake* next; 
+}snake;
+
+void setCursorPos(int,int);
+
+
+
 void snackGame(){
 
     // ■와 ●가 ??로 출력되는 문제 때문에 설정
@@ -26,4 +38,45 @@ void snackGame(){
     }
     
 
+    snake* head;
+    snake* newBody;
+    newBody = (snake*)malloc(sizeof(snake));
+    newBody->x = mapSize/2;
+    newBody->y = mapSize/2;
+    newBody->next = NULL;
+    head = newBody;
+
+    newBody = (snake*)malloc(sizeof(snake));
+    newBody->x = mapSize/2 + 1;
+    newBody->y = mapSize/2;
+    newBody->next = NULL;    
+    head->next = newBody;
+
+    newBody = (snake*)malloc(sizeof(snake));
+    newBody->x = mapSize/2 + 1;
+    newBody->y = mapSize/2 + 1;
+    newBody->next = NULL;
+    head->next->next = newBody;
+
+    snake* cur = head;;
+    while(1){
+        setCursorPos(cur->x,cur->y);
+        printf("● ");
+        cur = cur->next;
+        if(cur == NULL)
+            break;
+        
+    }
+
+
+}
+
+
+void setCursorPos(int x,int y){
+    COORD pos;
+    //문자열의 가로가 2칸이기 때문에 2를 곱함
+    pos.X = x * 2;
+    pos.Y = y;
+
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
