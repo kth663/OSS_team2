@@ -3,6 +3,7 @@
 #include<windows.h>
 #include<locale.h>
 #include<conio.h>
+#include<time.h>
 
 
 typedef struct snake{
@@ -15,15 +16,36 @@ typedef struct snake{
 
 void setCursorPos(int,int);
 
+void pushPos(int ax[], int ay[],int x,int y,int size){
+    ax[size] = x;
+    ay[size] = y;
+}
+
+void popPos(int ax[], int ay[],int x,int y,int size){
+    for(int i = 0;i<size;i++){
+        if(ax[i] == x && ay[i] == y){
+            for(int j = i+1;j<size;j++){
+                ax[j-1] = ax[j];
+                ay[j-1] = ay[j];
+            }
+        }
+    }
+}
 
 
 void snackGame(){
-
+    
     // ■와 ●가 ??로 출력되는 문제 때문에 설정
     setlocale(LC_CTYPE, "ko_KR.UTF-8");
     //명령어 실행후 메시지가 나오지 않게 함
     system("chcp 65001 > nul");
 
+    srand(time(0));
+    
+    int applePosX[200];
+    int applePosY[200];
+    int size = 0;
+    
     int mapSize = 5;
     mapSize += 2;
 
@@ -34,6 +56,9 @@ void snackGame(){
             }
             else{
                 printf("  ");
+                applePosX[size] = j;
+                applePosY[size] = i;
+                size++;
             }
         }
         printf("\n");
@@ -49,6 +74,8 @@ void snackGame(){
     newBody->next = NULL;
     newBody->pre = NULL;
     head = newBody;
+    popPos(applePosX, applePosY, newBody->x, newBody->y, size);
+    size--;
 
     newBody = (snake*)malloc(sizeof(snake));
     newBody->x = mapSize/2 + 1;
@@ -56,6 +83,8 @@ void snackGame(){
     newBody->next = NULL;    
     newBody->pre = head;
     head->next = newBody;
+    popPos(applePosX, applePosY, newBody->x, newBody->y, size);
+    size--;
 
     newBody = (snake*)malloc(sizeof(snake));
     newBody->x = mapSize/2 + 1;
@@ -64,6 +93,8 @@ void snackGame(){
     newBody->pre = head->next;
     head->next->next = newBody;
     tail = newBody;
+    popPos(applePosX, applePosY, newBody->x, newBody->y, size);
+    size--;
 
     snake* cur = head;;
     while(1){
@@ -74,6 +105,14 @@ void snackGame(){
             break;
         
     }
+
+    
+    int appleIdx = rand() % size;
+    int appleX = applePosX[appleIdx];
+    int appleY = applePosY[appleIdx];
+    setCursorPos(appleX, appleY);
+    printf("○ ");
+
 
     while(1){
         char input = _getch();
