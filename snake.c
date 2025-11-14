@@ -24,10 +24,11 @@ void pushPos(int ax[], int ay[],int x,int y,int size){
 void popPos(int ax[], int ay[],int x,int y,int size){
     for(int i = 0;i<size;i++){
         if(ax[i] == x && ay[i] == y){
-            for(int j = i+1;j<size;j++){
+            for(int j = i+1;j<=size;j++){
                 ax[j-1] = ax[j];
                 ay[j-1] = ay[j];
             }
+            break;
         }
     }
 }
@@ -114,6 +115,7 @@ void snackGame(){
     printf("○ ");
 
 
+
     while(1){
         char input = _getch();
         int nx = 0;
@@ -143,11 +145,23 @@ void snackGame(){
             setCursorPos(head->x, head->y);
             printf("● ");
 
+            popPos(applePosX, applePosY, head->x, head->y, size);
+            size--;
+
+            appleIdx = rand() % size;
+            appleX = applePosX[appleIdx];
+            appleY = applePosY[appleIdx];
+            setCursorPos(appleX, appleY);
+            printf("○ ");
+
         }
         else{
-                
+            
+            
             setCursorPos(tail->x, tail->y);
             printf("  ");
+            pushPos(applePosX, applePosY, tail->x, tail->y, size);
+            size++;
 
             //꼬리의 위치를 이동할 칸으로 변경
             tail->x = head->x + nx;
@@ -164,6 +178,8 @@ void snackGame(){
         
             setCursorPos(head->x, head->y);
             printf("● ");
+            popPos(applePosX, applePosY, head->x, head->y, size);
+            size--;
         }
 
     }
