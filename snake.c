@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<windows.h>
 #include<locale.h>
+#include<conio.h>
 
 
 typedef struct snake{
@@ -9,6 +10,7 @@ typedef struct snake{
     int y;
 
     struct snake* next; 
+    struct snake* pre;
 }snake;
 
 void setCursorPos(int,int);
@@ -39,24 +41,29 @@ void snackGame(){
     
 
     snake* head;
+    snake* tail;
     snake* newBody;
     newBody = (snake*)malloc(sizeof(snake));
     newBody->x = mapSize/2;
     newBody->y = mapSize/2;
     newBody->next = NULL;
+    newBody->pre = NULL;
     head = newBody;
 
     newBody = (snake*)malloc(sizeof(snake));
     newBody->x = mapSize/2 + 1;
     newBody->y = mapSize/2;
     newBody->next = NULL;    
+    newBody->pre = head;
     head->next = newBody;
 
     newBody = (snake*)malloc(sizeof(snake));
     newBody->x = mapSize/2 + 1;
     newBody->y = mapSize/2 + 1;
     newBody->next = NULL;
+    newBody->pre = head->next;
     head->next->next = newBody;
+    tail = newBody;
 
     snake* cur = head;;
     while(1){
@@ -66,6 +73,45 @@ void snackGame(){
         if(cur == NULL)
             break;
         
+    }
+
+    while(1){
+        char input = _getch();
+        int nx = 0;
+        int ny = 0;
+        if(input == 'w'){
+            ny--;
+        }
+        else if(input == 's'){
+            ny++;
+        }
+        else if(input == 'a'){
+            nx--;
+        }
+        else if(input == 'd'){
+            nx++;
+        }
+
+        setCursorPos(tail->x, tail->y);
+        printf("  ");
+
+        //꼬리의 위치를 이동할 칸으로 변경
+        tail->x = head->x + nx;
+        tail->y = head->y + ny;
+        //꼬리와 머리를 연결
+        tail->next = head;
+        head->pre = tail;
+        //꼬리를 머리로 설정
+        head = tail;
+        tail = tail->pre;
+        //전 꼬리와 현재 꼬리 연결 끊기
+        head->pre = NULL;
+        tail->next = NULL;
+    
+        setCursorPos(head->x, head->y);
+        printf("● ");
+        
+
     }
 
 
