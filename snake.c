@@ -131,25 +131,40 @@ void snackGame(){
             nx++;
         }
 
-        setCursorPos(tail->x, tail->y);
-        printf("  ");
+        if(head->x + nx == appleX && head->y + ny == appleY){
+            
+            newBody = (snake*)malloc(sizeof(snake));
+            newBody->x = head->x + nx;
+            newBody->y = head->y + ny;
+            newBody->next = head;
+            head->pre = newBody;
+            head = newBody;
+            
+            setCursorPos(head->x, head->y);
+            printf("● ");
 
-        //꼬리의 위치를 이동할 칸으로 변경
-        tail->x = head->x + nx;
-        tail->y = head->y + ny;
-        //꼬리와 머리를 연결
-        tail->next = head;
-        head->pre = tail;
-        //꼬리를 머리로 설정
-        head = tail;
-        tail = tail->pre;
-        //전 꼬리와 현재 꼬리 연결 끊기
-        head->pre = NULL;
-        tail->next = NULL;
-    
-        setCursorPos(head->x, head->y);
-        printf("● ");
+        }
+        else{
+                
+            setCursorPos(tail->x, tail->y);
+            printf("  ");
+
+            //꼬리의 위치를 이동할 칸으로 변경
+            tail->x = head->x + nx;
+            tail->y = head->y + ny;
+            //꼬리와 머리를 연결
+            tail->next = head;
+            head->pre = tail;
+            //꼬리를 머리로 설정
+            head = tail;
+            tail = tail->pre;
+            //전 꼬리와 현재 꼬리 연결 끊기
+            head->pre = NULL;
+            tail->next = NULL;
         
+            setCursorPos(head->x, head->y);
+            printf("● ");
+        }
 
     }
 
