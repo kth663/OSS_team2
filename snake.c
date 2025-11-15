@@ -47,15 +47,19 @@ void snackGame(){
     int applePosY[200];
     int size = 0;
     
+
+    int checkMap[12][12];
     int mapSize = 5;
     mapSize += 2;
 
     for(int i = 0;i<mapSize;i++){
         for(int j = 0;j<mapSize;j++){
             if(i == 0 || j == 0 || i == mapSize-1 || j == mapSize-1){
+                checkMap[j][i] = 1;
                 printf("■ ");
             }
             else{
+                checkMap[j][i] = 0;
                 printf("  ");
                 applePosX[size] = j;
                 applePosY[size] = i;
@@ -77,6 +81,7 @@ void snackGame(){
     head = newBody;
     popPos(applePosX, applePosY, newBody->x, newBody->y, size);
     size--;
+    checkMap[newBody->x][newBody->y] = 1;
 
     newBody = (snake*)malloc(sizeof(snake));
     newBody->x = mapSize/2 + 1;
@@ -86,6 +91,7 @@ void snackGame(){
     head->next = newBody;
     popPos(applePosX, applePosY, newBody->x, newBody->y, size);
     size--;
+    checkMap[newBody->x][newBody->y] = 1;
 
     newBody = (snake*)malloc(sizeof(snake));
     newBody->x = mapSize/2 + 1;
@@ -96,6 +102,7 @@ void snackGame(){
     tail = newBody;
     popPos(applePosX, applePosY, newBody->x, newBody->y, size);
     size--;
+    checkMap[newBody->x][newBody->y] = 1;
 
     snake* cur = head;;
     while(1){
@@ -124,7 +131,7 @@ void snackGame(){
     while(1){
         if(kbhit()){
             char input = _getch();
-            int i = 0;
+            int i = -1;
             if(input == 'w'){
                 i = 0;
             }
@@ -137,12 +144,20 @@ void snackGame(){
             else if(input == 'd'){
                 i = 3;
             }
-            nx = dirX[i];
-            ny = dirY[i];
+
+            if(i != -1){
+                nx = dirX[i];
+                ny = dirY[i];
+            }
             
         }
         
-
+        if(head->x + nx == 0 || head->x + nx == mapSize-1 || head->y + ny == 0 || head->y + ny == mapSize-1){
+            break;
+        }
+        if(checkMap[head->x + nx][head->y + ny] == 1){
+            break;
+        }
         if(head->x + nx == appleX && head->y + ny == appleY){
             
             newBody = (snake*)malloc(sizeof(snake));
@@ -157,6 +172,7 @@ void snackGame(){
 
             popPos(applePosX, applePosY, head->x, head->y, size);
             size--;
+            checkMap[head->x][head->y] = 1;
 
             appleIdx = rand() % size;
             appleX = applePosX[appleIdx];
@@ -172,6 +188,7 @@ void snackGame(){
             printf("  ");
             pushPos(applePosX, applePosY, tail->x, tail->y, size);
             size++;
+            checkMap[tail->x][tail->y] = 0;
 
             //꼬리의 위치를 이동할 칸으로 변경
             tail->x = head->x + nx;
@@ -190,11 +207,15 @@ void snackGame(){
             printf("● ");
             popPos(applePosX, applePosY, head->x, head->y, size);
             size--;
+            checkMap[head->x][head->y] = 1;
         }
 
         Sleep(500);
 
     }
+
+    system("cls");
+    printf("Game Over");
 
 
 }
