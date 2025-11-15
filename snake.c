@@ -115,23 +115,33 @@ void snackGame(){
     printf("○ ");
 
 
+    int dirX[4] = {0,0,-1,1};
+    int dirY[4] = {-1,1,0,0};
+
+    int nx = dirX[0];
+    int ny = dirY[0];
 
     while(1){
-        char input = _getch();
-        int nx = 0;
-        int ny = 0;
-        if(input == 'w'){
-            ny--;
+        if(kbhit()){
+            char input = _getch();
+            int i = 0;
+            if(input == 'w'){
+                i = 0;
+            }
+            else if(input == 's'){
+                i = 1;
+            }
+            else if(input == 'a'){
+                i = 2;
+            }
+            else if(input == 'd'){
+                i = 3;
+            }
+            nx = dirX[i];
+            ny = dirY[i];
+            
         }
-        else if(input == 's'){
-            ny++;
-        }
-        else if(input == 'a'){
-            nx--;
-        }
-        else if(input == 'd'){
-            nx++;
-        }
+        
 
         if(head->x + nx == appleX && head->y + ny == appleY){
             
@@ -181,6 +191,8 @@ void snackGame(){
             popPos(applePosX, applePosY, head->x, head->y, size);
             size--;
         }
+
+        Sleep(500);
 
     }
 
