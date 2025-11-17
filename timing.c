@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <windows.h>
 #include "timing.h"
 
 
@@ -22,6 +23,8 @@ void timing_game(){
 
     if (key == 27){
       printf("게임 종료.");
+      Sleep(1000);
+      system("cls");
       break;
     }
     else if (key != 13){
