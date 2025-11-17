@@ -17,7 +17,7 @@ void timing_game(){
     
   printf("\n10초 타이밍 맞추기 게임을 시작하시겠습니까?\n");
   printf("엔터키를 눌러 계속하거나 ESC를 눌러 나가십시오.\n");
-  /*기존 esc 안될 경우 q로 변경할수도?*/
+  
   key = getch();
 
     if (key == 27){
@@ -31,13 +31,13 @@ void timing_game(){
 
   printf("\n엔터 키를 눌러 게임 시작하기\n");
   getchar();
-  start_time = time(NULL);
+  start_time = clock();
   printf("10초 후 엔터를 누르세요.");
 
   getchar();
-  end_time = time(NULL);
+  end_time = clock();
 
-  t = difftime(end_time , start_time);
+  t = (double)(end_time - start_time) / CLOCKS_PER_SEC;
   printf("게임 결과: %.2f초\n", t);
 
   double gap = t - target;
