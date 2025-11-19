@@ -44,6 +44,28 @@ void snackGame(){
     //명령어 실행후 메시지가 나오지 않게 함
     system("chcp 65001 > nul");
 
+
+    system("cls");
+    printf("level 1 : 5 * 5\n");
+    printf("level 2 : 8 * 8\n");
+    printf("level 3 : 10 * 10\n");
+    printf("Enter level -> ");
+    int level = 1;
+    int mapSize = 5;
+    scanf_s("%d", &level);
+    if(level == 1){
+        mapSize = 5;
+    }
+    else if(level == 2){
+        mapSize = 8;
+    }
+    else if(level == 3){
+        mapSize = 10;
+    }
+    system("cls");
+    
+
+
     srand(time(0));
     
     int applePosX[200];
@@ -52,7 +74,6 @@ void snackGame(){
     
 
     int checkMap[12][12];
-    int mapSize = 5;
     mapSize += 2;
 
     int startTime = time(0);
@@ -234,7 +255,6 @@ void snackGame(){
         if(c == 'q')
             break;
         if(c == 'r'){
-            system("cls");
             snackGame();
             break;
         }
