@@ -236,7 +236,7 @@ void snackGame(){
             checkMap[head->x][head->y] = 1;
         }
 
-        Sleep(500);
+        Sleep(300);
 
     }
 
