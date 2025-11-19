@@ -227,10 +227,17 @@ void snackGame(){
     
     printf("Score : %d",score);
 
+    printf("\n\nr : restart\nq : quit");
+
     while(1){
         char c = _getch();
         if(c == 'q')
             break;
+        if(c == 'r'){
+            system("cls");
+            snackGame();
+            break;
+        }
     }
 
     
