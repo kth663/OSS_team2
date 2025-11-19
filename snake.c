@@ -37,7 +37,7 @@ void popPos(int ax[], int ay[],int x,int y,int size){
 }
 
 
-void snackGame(){
+void snakeGame(){
     
     // ■와 ●가 ??로 출력되는 문제 때문에 설정
     setlocale(LC_CTYPE, "ko_KR.UTF-8");
@@ -46,21 +46,25 @@ void snackGame(){
 
 
     system("cls");
-    printf("level 1 : 5 * 5\n");
-    printf("level 2 : 8 * 8\n");
-    printf("level 3 : 10 * 10\n");
+    printf("Level 1 : 5 * 5\n");
+    printf("Level 2 : 8 * 8\n");
+    printf("Level 3 : 10 * 10\n");
     printf("Enter level -> ");
     int level = 1;
     int mapSize = 5;
+    int speed = 500;
     scanf_s("%d", &level);
     if(level == 1){
         mapSize = 5;
+        speed = 500;
     }
     else if(level == 2){
         mapSize = 8;
+        speed = 400;
     }
     else if(level == 3){
         mapSize = 10;
+        speed = 300;
     }
     system("cls");
     
@@ -236,7 +240,7 @@ void snackGame(){
             checkMap[head->x][head->y] = 1;
         }
 
-        Sleep(300);
+        Sleep(speed);
 
     }
 
