@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <windows.h>
+#include <conio.h>
 #include "start.h"
 
 void start(){
     int key;
   
-  printf("press Enter to start\n");
-  key = getchar();
+  printf("press Enter to Start\n");
+  key = getch();
   if (key == 27){
     return;
   }
