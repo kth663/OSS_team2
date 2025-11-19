@@ -6,6 +6,9 @@
 #include<time.h>
 
 
+int score = 0;
+
+
 typedef struct snake{
     int x;
     int y;
@@ -51,6 +54,8 @@ void snackGame(){
     int checkMap[12][12];
     int mapSize = 5;
     mapSize += 2;
+
+    int startTime = time(0);
 
     for(int i = 0;i<mapSize;i++){
         for(int j = 0;j<mapSize;j++){
@@ -214,8 +219,22 @@ void snackGame(){
 
     }
 
+    int endTime = time(0);
     system("cls");
-    printf("Game Over");
+    printf("Game Over\n");
+
+    score += endTime - startTime;
+    
+    printf("Score : %d",score);
+
+    while(1){
+        char c = _getch();
+        if(c == 'q')
+            break;
+    }
+
+    
+
 
 
 }
