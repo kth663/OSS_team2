@@ -55,7 +55,7 @@ void snakeGame(){
     int speed = 500;
     scanf_s("%d", &level);
     if(level == 1){
-        mapSize = 5;
+        mapSize = 6;
         speed = 500;
     }
     else if(level == 2){
