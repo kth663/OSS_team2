@@ -259,7 +259,7 @@ void snakeGame(){
         if(c == 'q')
             break;
         if(c == 'r'){
-            snackGame();
+            snakeGame();
             break;
         }
     }
