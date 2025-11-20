@@ -46,7 +46,7 @@ void snakeGame(){
 
 
     system("cls");
-    printf("Level 1 : 5 * 5\n");
+    printf("Level 1 : 6 * 6\n");
     printf("Level 2 : 8 * 8\n");
     printf("Level 3 : 10 * 10\n");
     printf("Enter level -> ");
@@ -158,7 +158,10 @@ void snakeGame(){
     int nx = dirX[0];
     int ny = dirY[0];
 
+    int isClear = 0;
+
     while(1){
+        
         if(kbhit()){
             char input = _getch();
             int i = -1;
@@ -204,6 +207,11 @@ void snakeGame(){
             size--;
             checkMap[head->x][head->y] = 1;
 
+            if(size == 0){
+                isClear = 1;
+                break;
+            }
+
             appleIdx = rand() % size;
             appleX = applePosX[appleIdx];
             appleY = applePosY[appleIdx];
@@ -246,11 +254,38 @@ void snakeGame(){
 
     int endTime = time(0);
     system("cls");
-    printf("Game Over\n");
-
-    score += endTime - startTime;
     
-    printf("Score : %d",score);
+    int clearScore = 0;
+    if(isClear == 1){
+        if (level)
+        {
+            clearScore= 500;
+        }
+        else if(level == 2){
+            clearScore= 1200;
+        }
+        else if(level == 3){
+            clearScore= 2000;
+        }
+    }
+    int timeScore = endTime - startTime;
+    
+    int totalScore = clearScore + timeScore;
+    
+    if(isClear == 1){
+        printf("Game Clear!\n");
+        printf("Clear Score : %d\n",clearScore);
+        printf("Time Score : %d\n",timeScore);
+        printf("Total Score : %d + %d = %d\n",clearScore,timeScore,totalScore);
+
+    }
+    else{
+        printf("Game Over\n");
+        printf("Score : %d",totalScore);
+
+    }
+    
+    score += totalScore;
 
     printf("\n\nr : restart\nq : quit");
 
