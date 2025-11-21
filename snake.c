@@ -276,16 +276,17 @@ void snakeGame(){
         printf("Game Clear!\n");
         printf("Clear Score : %d\n",clearScore);
         printf("Time Score : %d\n",timeScore);
-        printf("Total Score : %d + %d = %d\n",clearScore,timeScore,totalScore);
+        printf("GetScore : %d + %d = %d\n",clearScore,timeScore,totalScore);
 
     }
     else{
         printf("Game Over\n");
-        printf("Score : %d",totalScore);
+        printf("GetScore : %d\n",totalScore);
 
     }
     
     score += totalScore;
+    printf("Score : %d\n",score);
 
     printf("\n\nr : restart\nq : quit");
 
