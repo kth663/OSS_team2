@@ -99,42 +99,38 @@ void snakeGame(){
         printf("\n");
     }
     
-
+    int snakeX[3] = {mapSize/2, mapSize/2 + 1, mapSize/2 + 1};
+    int snakeY[3] = {mapSize/2, mapSize/2, mapSize/2 + 1};
     snake* head;
     snake* tail;
     snake* newBody;
-    newBody = (snake*)malloc(sizeof(snake));
-    newBody->x = mapSize/2;
-    newBody->y = mapSize/2;
-    newBody->next = NULL;
-    newBody->pre = NULL;
-    head = newBody;
-    popPos(applePosX, applePosY, newBody->x, newBody->y, size);
-    size--;
-    checkMap[newBody->x][newBody->y] = 1;
+    snake* pre = NULL;
 
-    newBody = (snake*)malloc(sizeof(snake));
-    newBody->x = mapSize/2 + 1;
-    newBody->y = mapSize/2;
-    newBody->next = NULL;    
-    newBody->pre = head;
-    head->next = newBody;
-    popPos(applePosX, applePosY, newBody->x, newBody->y, size);
-    size--;
-    checkMap[newBody->x][newBody->y] = 1;
+    for(int i = 0;i<3;i++){
+        newBody = (snake*)malloc(sizeof(snake));
+        newBody->x = snakeX[i];
+        newBody->y = snakeY[i];
+        newBody->next = NULL;
+        newBody->pre = pre;
+        if(i == 0){
+            head = newBody;
+        }
+        else if(i == 2){
+            pre->next = newBody;
+            tail = newBody;
+        }
+        else{
+            pre->next = newBody;
+        }
+        pre = newBody;
+        popPos(applePosX, applePosY, newBody->x, newBody->y, size);
+        size--;
+        checkMap[newBody->x][newBody->y] = 1;
+    }
+    
 
-    newBody = (snake*)malloc(sizeof(snake));
-    newBody->x = mapSize/2 + 1;
-    newBody->y = mapSize/2 + 1;
-    newBody->next = NULL;
-    newBody->pre = head->next;
-    head->next->next = newBody;
-    tail = newBody;
-    popPos(applePosX, applePosY, newBody->x, newBody->y, size);
-    size--;
-    checkMap[newBody->x][newBody->y] = 1;
 
-    snake* cur = head;;
+    snake* cur = head;
     while(1){
         setCursorPos(cur->x,cur->y);
         printf("● ");
