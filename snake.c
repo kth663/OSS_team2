@@ -126,19 +126,12 @@ void snakeGame(){
         popPos(applePosX, applePosY, newBody->x, newBody->y, size);
         size--;
         checkMap[newBody->x][newBody->y] = 1;
+        setCursorPos(newBody->x, newBody->y);
+        printf("● ");
+
     }
     
 
-
-    snake* cur = head;
-    while(1){
-        setCursorPos(cur->x,cur->y);
-        printf("● ");
-        cur = cur->next;
-        if(cur == NULL)
-            break;
-        
-    }
 
     
     int appleIdx = rand() % size;
