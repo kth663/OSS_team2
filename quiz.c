@@ -3,11 +3,9 @@
 #include <string.h>
 #include <time.h>
 
-//상수들 정의함
 #define MAX_QUESTIONS 50 
 #define MAX_STRLEN 256
 
-// 퀴즈에 활용될 문자열들 받아옴
 char questions[MAX_QUESTIONS][MAX_STRLEN];
 char answers[MAX_QUESTIONS][MAX_STRLEN];
 int questionCount = 0;
@@ -18,7 +16,7 @@ void removeNewline(char* str) {
 }
 
 // 넌센스 퀴즈 함수
-void startNonsenseQuiz() {
+void quiz() {
     FILE* questionFile;
     FILE* answerFile;
     
@@ -28,7 +26,6 @@ void startNonsenseQuiz() {
         questionFile = fopen("questions.txt", "r");
         answerFile = fopen("answers.txt", "r");
 
-        // 에러 생길 때
         if (questionFile == NULL || answerFile == NULL) {
             printf("오류: 데이터 파일(questions.txt, answers.txt)을 찾을 수 없습니다.\n");
             if (questionFile) fclose(questionFile);
@@ -36,16 +33,15 @@ void startNonsenseQuiz() {
             return;
         }
 
-        // 파일 읽는 역할
+        //읽는 부분
         while (questionCount < MAX_QUESTIONS && 
                fgets(questions[questionCount], MAX_STRLEN, questionFile) != NULL &&
                fgets(answers[questionCount], MAX_STRLEN, answerFile) != NULL) {
             
-            // \n 제거 해줘야됨
             removeNewline(questions[questionCount]);
             removeNewline(answers[questionCount]);
             
-            questionCount++; // 퀴즈 개수 증가
+            questionCount++;
         }
         
         // 파일 닫기
@@ -84,10 +80,4 @@ void startNonsenseQuiz() {
         printf("\n>>> 땡! 틀렸습니다. <<<\n");
         printf("정답은 ['%s'] 입니다.\n", answers[randomIndex]);
     }
-}
-
-// 테스트용 main 함수
-int main() {
-    startNonsenseQuiz();
-    return 0;
 }
