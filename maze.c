@@ -60,6 +60,29 @@ int maze(){
         char input = _getch();
         int nx = x;
         int ny = y;
+        if(input == 13){
+            if(map[y][x] == 'E'){
+
+                break;
+            }
+            else if(map[y][x] != 'G'){
+
+                break;;
+            }
+            else if(map[y][x] != 'T'){
+                
+                break;
+            }
+            else if(map[y][x] != 'R'){
+                
+                break;
+            }
+            else if(map[y][x] != 'L'){
+                
+                break;
+            }
+            
+        }
         if(input == 'w'){
             ny--;
         }
