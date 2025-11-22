@@ -36,6 +36,14 @@ void popPos(int ax[], int ay[],int x,int y,int size){
     }
 }
 
+void spawnApple(int* appleIdx, int* appleX, int* appleY, int applePosX[], int applePosY[], int size){
+    *appleIdx = rand() % size;
+    *appleX = applePosX[*appleIdx];
+    *appleY = applePosY[*appleIdx];
+    setCursorPos(*appleX, *appleY);
+    printf("○ ");
+}
+
 
 void snakeGame(){
     
@@ -134,12 +142,11 @@ void snakeGame(){
 
 
     
-    int appleIdx = rand() % size;
-    int appleX = applePosX[appleIdx];
-    int appleY = applePosY[appleIdx];
-    setCursorPos(appleX, appleY);
-    printf("○ ");
-
+    int appleIdx;
+    int appleX;
+    int appleY;
+    
+    spawnApple(&appleIdx, &appleX, &appleY, applePosX, applePosY, size);
 
     int dirX[4] = {0,0,-1,1};
     int dirY[4] = {-1,1,0,0};
@@ -201,12 +208,7 @@ void snakeGame(){
                 break;
             }
 
-            appleIdx = rand() % size;
-            appleX = applePosX[appleIdx];
-            appleY = applePosY[appleIdx];
-            setCursorPos(appleX, appleY);
-            printf("○ ");
-
+            spawnApple(&appleIdx, &appleX, &appleY, applePosX, applePosY, size);
         }
         else{
             
