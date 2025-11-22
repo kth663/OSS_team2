@@ -18,31 +18,9 @@ typedef struct snake{
 }snake;
 
 void setCursorPos(int,int);
-
-void pushPos(int ax[], int ay[],int x,int y,int size){
-    ax[size] = x;
-    ay[size] = y;
-}
-
-void popPos(int ax[], int ay[],int x,int y,int size){
-    for(int i = 0;i<size;i++){
-        if(ax[i] == x && ay[i] == y){
-            for(int j = i+1;j<=size;j++){
-                ax[j-1] = ax[j];
-                ay[j-1] = ay[j];
-            }
-            break;
-        }
-    }
-}
-
-void spawnApple(int* appleIdx, int* appleX, int* appleY, int applePosX[], int applePosY[], int size){
-    *appleIdx = rand() % size;
-    *appleX = applePosX[*appleIdx];
-    *appleY = applePosY[*appleIdx];
-    setCursorPos(*appleX, *appleY);
-    printf("○ ");
-}
+void pushPos(int [], int [],int,int,int);
+void popPos(int [], int [],int,int,int);
+void spawnApple(int*, int*, int*, int [], int [], int);
 
 
 void snakeGame(){
@@ -145,7 +123,7 @@ void snakeGame(){
     int appleIdx;
     int appleX;
     int appleY;
-    
+
     spawnApple(&appleIdx, &appleX, &appleY, applePosX, applePosY, size);
 
     int dirX[4] = {0,0,-1,1};
@@ -305,4 +283,29 @@ void setCursorPos(int x,int y){
     pos.Y = y;
 
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
+
+void pushPos(int ax[], int ay[],int x,int y,int size){
+    ax[size] = x;
+    ay[size] = y;
+}
+
+void popPos(int ax[], int ay[],int x,int y,int size){
+    for(int i = 0;i<size;i++){
+        if(ax[i] == x && ay[i] == y){
+            for(int j = i+1;j<=size;j++){
+                ax[j-1] = ax[j];
+                ay[j-1] = ay[j];
+            }
+            break;
+        }
+    }
+}
+
+void spawnApple(int* appleIdx, int* appleX, int* appleY, int applePosX[], int applePosY[], int size){
+    *appleIdx = rand() % size;
+    *appleX = applePosX[*appleIdx];
+    *appleY = applePosY[*appleIdx];
+    setCursorPos(*appleX, *appleY);
+    printf("○ ");
 }
