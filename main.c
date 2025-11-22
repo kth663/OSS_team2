@@ -4,7 +4,9 @@
 
 int main(void){
 
-start();
+SetConsoleOutputCP(CP_UTF8);
+SetConsoleCP(CP_UTF8);
+start_screen();
 return 0;
     
 }
