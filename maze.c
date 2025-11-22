@@ -18,6 +18,18 @@ void printShape(char ch){
     }
 }
 
+void closeMaze(){
+    for(int i = 27/3;i>=0;i--){
+        for(int j = 0;j<3;j++){
+            setCursorPos(0, i*3 + j);
+            printf("                                                       ");
+        }
+        
+        Sleep(50);
+    }
+    
+}
+
 int maze(){
     
     // ■와 ●가 ??로 출력되는 문제 때문에 설정
@@ -47,6 +59,7 @@ int maze(){
             printShape(ch);
         }
         printf("\n");
+        Sleep(50);
     }
 
     int x = 1;
@@ -62,23 +75,28 @@ int maze(){
         int ny = y;
         if(input == 13){
             if(map[y][x] == 'E'){
+                closeMaze();
 
                 break;
             }
             else if(map[y][x] != 'G'){
+                closeMaze();
 
                 break;;
             }
             else if(map[y][x] != 'T'){
-                
+                closeMaze();
+
                 break;
             }
             else if(map[y][x] != 'R'){
-                
+                closeMaze();
+
                 break;
             }
             else if(map[y][x] != 'L'){
-                
+                closeMaze();
+
                 break;
             }
             
