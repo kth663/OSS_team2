@@ -21,19 +21,20 @@ int money = 200;
 int luckyCharm = 0;
 
 void printMaze(void);
-int canMove(int nr, int nc);
+int  canMove(int nr, int nc);
 void openInventory(void);
 void openShop(void);
 void playSlotMachine(void);
 void spinAnimation(int* s1, int* s2, int* s3, int useLucky);
 
-int main(void) {
-    srand((unsigned int)time(NULL));
+// main.c에서 호출할 함수
+void runGameLoop(void);
 
+// ================== 게임 루프 함수 ==================
+void runGameLoop(void) {
     while (1) {
         printMaze();
         printf("\nWASD: 이동, E: 인벤토리, Q: 종료\n");
-        
 
         int ch = _getch();
         int nr = player_r;
@@ -55,7 +56,6 @@ int main(void) {
         else {
             continue;
         }
-
 
         if (canMove(nr, nc)) {
             player_r = nr;
@@ -86,9 +86,9 @@ int main(void) {
             }
         }
     }
-
-    return 0;
 }
+
+// ================== 나머지 함수들 ==================
 
 void printMaze(void) {
     system("cls");
