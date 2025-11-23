@@ -1,7 +1,5 @@
-#include<stdio.h>
+#include "ranking.h"
 
-int main(void){
-
-
-    
+int main() {
+    return executeRankingManager();
 }
