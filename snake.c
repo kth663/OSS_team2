@@ -8,7 +8,7 @@
 
 int score = 0;
 
-
+//뱀의 몸 구조체
 typedef struct snake{
     int x;
     int y;
@@ -39,6 +39,7 @@ void snakeGame(){
     int level = 1;
     int mapSize = 5;
     int speed = 500;
+    //레벨 입력후 조정
     scanf_s("%d", &level);
     if(level == 1){
         mapSize = 6;
@@ -68,6 +69,7 @@ void snakeGame(){
 
     int startTime = time(0);
 
+    //맵 생성
     for(int i = 0;i<mapSize;i++){
         for(int j = 0;j<mapSize;j++){
             if(i == 0 || j == 0 || i == mapSize-1 || j == mapSize-1){
@@ -85,6 +87,7 @@ void snakeGame(){
         printf("\n");
     }
     
+    //뱀 생성(몸통 3개)
     int snakeX[3] = {mapSize/2, mapSize/2 + 1, mapSize/2 + 1};
     int snakeY[3] = {mapSize/2, mapSize/2, mapSize/2 + 1};
     snake* head;
@@ -124,6 +127,7 @@ void snakeGame(){
     int appleX;
     int appleY;
 
+    //가장 초기에 사과 하나 생성
     spawnApple(&appleIdx, &appleX, &appleY, applePosX, applePosY, size);
 
     int dirX[4] = {0,0,-1,1};
@@ -135,7 +139,7 @@ void snakeGame(){
     int isClear = 0;
 
     while(1){
-        
+        //입력 받았을 때 방향 전환
         if(kbhit()){
             char input = _getch();
             int i = -1;
@@ -158,15 +162,17 @@ void snakeGame(){
             }
             
         }
-        
+        //외곽 부분 충돌시 종료
         if(head->x + nx == 0 || head->x + nx == mapSize-1 || head->y + ny == 0 || head->y + ny == mapSize-1){
             break;
         }
+        //자기 몸통과 충돌시 종료
         if(checkMap[head->x + nx][head->y + ny] == 1){
             break;
         }
+        //사과 먹었을 때
         if(head->x + nx == appleX && head->y + ny == appleY){
-            
+            //머리 추가
             newBody = (snake*)malloc(sizeof(snake));
             newBody->x = head->x + nx;
             newBody->y = head->y + ny;
@@ -181,6 +187,7 @@ void snakeGame(){
             size--;
             checkMap[head->x][head->y] = 1;
 
+            //모든 칸이 채워지면 클리어
             if(size == 0){
                 isClear = 1;
                 break;
@@ -217,6 +224,7 @@ void snakeGame(){
             checkMap[head->x][head->y] = 1;
         }
 
+        //speed에 따라 속도 조절
         Sleep(speed);
 
     }
@@ -224,9 +232,11 @@ void snakeGame(){
     int endTime = time(0);
     system("cls");
     
+
+    //클리어시 추가 스코어 부여
     int clearScore = 0;
     if(isClear == 1){
-        if (level)
+        if (level == 1)
         {
             clearScore= 500;
         }
@@ -237,10 +247,12 @@ void snakeGame(){
             clearScore= 2000;
         }
     }
+    //시간에 따라서 스코어 부여
     int timeScore = endTime - startTime;
-    
+    //이번 게임에서 얻은 총 스코어
     int totalScore = clearScore + timeScore;
     
+    //스코어 출력
     if(isClear == 1){
         printf("Game Clear!\n");
         printf("Clear Score : %d\n",clearScore);
@@ -254,11 +266,13 @@ void snakeGame(){
 
     }
     
+    //게임에서 얻은 스코어를 전체 스코어에 반영
     score += totalScore;
     printf("Score : %d\n",score);
 
     printf("\n\nr : restart\nq : quit");
 
+    //입력에 따라 재시작 또는 종료
     while(1){
         char c = _getch();
         if(c == 'q')
@@ -276,6 +290,7 @@ void snakeGame(){
 }
 
 
+//커서의 위치를 조절하는 함수
 void setCursorPos(int x,int y){
     COORD pos;
     //문자열의 가로가 2칸이기 때문에 2를 곱함
@@ -285,11 +300,13 @@ void setCursorPos(int x,int y){
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
+//사과가 생길 수 있는 위치를 저장하는 배열에 추가
 void pushPos(int ax[], int ay[],int x,int y,int size){
     ax[size] = x;
     ay[size] = y;
 }
 
+//사과가 생길 수 있는 위치를 저장하는 배열에서 제거
 void popPos(int ax[], int ay[],int x,int y,int size){
     for(int i = 0;i<size;i++){
         if(ax[i] == x && ay[i] == y){
@@ -302,6 +319,7 @@ void popPos(int ax[], int ay[],int x,int y,int size){
     }
 }
 
+//사과 생성 함수
 void spawnApple(int* appleIdx, int* appleX, int* appleY, int applePosX[], int applePosY[], int size){
     *appleIdx = rand() % size;
     *appleX = applePosX[*appleIdx];
