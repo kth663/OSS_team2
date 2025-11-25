@@ -17,9 +17,9 @@ int store()
         for (int i = 0; i < 5; i++) {
             printf("%d. 비밀번호 %d번째 단서 ", i + 1, i + 1);
             if (clues[i] == 1) {
-                printf("[ V 보유중 ]\n"); // 이미 산 것
+                printf("[ V 보유중 ]\n");
             } else {
-                printf("[   구매가능 ]\n"); // 안 산 것
+                printf("[   구매가능 ]\n");
             }
         }
 
