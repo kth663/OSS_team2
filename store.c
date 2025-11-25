@@ -29,6 +29,8 @@ int store()
 
         scanf("%d", &choice);
 
+        while (getchar() != '\n');
+
         if (choice == 0) {
             printf("\n상점을 나갑니다.\n");
             break; 

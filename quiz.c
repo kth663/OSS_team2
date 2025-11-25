@@ -80,4 +80,6 @@ void quiz() {
         printf("\n>>> 땡! 틀렸습니다. <<<\n");
         printf("정답은 ['%s'] 입니다.\n", answers[randomIndex]);
     }
+
+    system("pause");
 }
