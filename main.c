@@ -26,7 +26,7 @@ int main(void){
             quiz(); 
         }
         else if (key == '2') {
-            store(); 
+            openStore(); 
         }
         else if (key == '0') {
             printf("\n\n테스트를 종료합니다.\n");
