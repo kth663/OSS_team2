@@ -183,5 +183,8 @@ void timing_game() {
                 break;
             }
         }
+        while (_kbhit()){
+            _getch();
+        }
     }
 }
