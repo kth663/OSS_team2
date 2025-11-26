@@ -68,7 +68,7 @@ void start_screen() {
     system("cls");
     system("color 0E");
 
-    char *title = "★ 게임제목정해주세요★";
+    char *title = "★ The Loop★";
     int titleX = (SCREEN_WIDTH - strlen(title)) / 2;
     int titleY = SCREEN_HEIGHT / 2 - 3;
 
