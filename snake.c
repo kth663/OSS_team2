@@ -4,9 +4,10 @@
 #include<locale.h>
 #include<conio.h>
 #include<time.h>
+#include "maze.h"
 
 
-int score = 0;
+
 
 //뱀의 몸 구조체
 typedef struct snake{

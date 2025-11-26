@@ -6,10 +6,11 @@
 #include <string.h>
 #include <math.h>
 #include "timing.h"
+#include "maze.h"
+#include "data.h"
 
 #define SCREEN_HEIGHT 25
 
-int score;
 
 int get_console_width() {
     CONSOLE_SCREEN_BUFFER_INFO csbi;

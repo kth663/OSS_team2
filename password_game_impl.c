@@ -3,7 +3,7 @@
 #include <io.h> 
 #include <time.h> 
 
-void set_utf8_encoding() {
+void set_utf8_encoding2() {
     if (SetConsoleOutputCP(65001) == 0) {
         fprintf(stderr, "SetConsoleOutputCP failed. Error: %lu\n", GetLastError());
     }
@@ -96,7 +96,7 @@ int runGame(const char *secretPassword) {
 }
 
 int executeGame() {
-    set_utf8_encoding();
+    set_utf8_encoding2();
     srand(time(NULL)); 
 
     char secretPassword[MAX_INPUT_LENGTH];
