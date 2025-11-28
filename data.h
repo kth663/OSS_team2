@@ -5,5 +5,6 @@ extern int score;
 extern char* password;
 extern int x;
 extern int y;
+extern int item[5];
 
 #endif

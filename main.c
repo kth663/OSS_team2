@@ -5,6 +5,7 @@
 int score = 0;
 int x;
 int y;
+int item[5] = {0,0,0,0,0};
 
 int main(void){
     SetConsoleOutputCP(CP_UTF8);
