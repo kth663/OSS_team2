@@ -3,6 +3,7 @@
 #include <io.h> 
 #include <time.h> 
 #include "maze.h"
+#include "data.h"
 
 void set_utf8_encoding2() {
     if (SetConsoleOutputCP(65001) == 0) {
@@ -16,7 +17,7 @@ void set_utf8_encoding2() {
     SetConsoleOutputCP(65001);
 } 
 
-void generateRandomPassword(char password[]) {
+void generateRandomPassword() {
     const char CHAR_SET[] = "abcdefghijklmnopqrstuvwxyz";
     int charSetSize = strlen(CHAR_SET);
 
@@ -27,7 +28,7 @@ void generateRandomPassword(char password[]) {
     password[PASSWORD_LENGTH] = '\0';
 }
 
-void savePasswordToFile(const char password[]) {
+void savePasswordToFile() {
     FILE *fp = NULL;
     errno_t err;
 
@@ -63,7 +64,9 @@ void displayExitMessage() {
     getchar();
 }
 
-int runGame(const char *secretPassword) {
+int runGame() {
+    system("cls");
+    displayWelcomeMessage();
     char userGuess[MAX_INPUT_LENGTH];
     int scanResult;
 
@@ -86,13 +89,14 @@ int runGame(const char *secretPassword) {
             continue;
         }
 
-        if (strcmp(secretPassword, userGuess) == 0) {
+        if (strcmp(password, userGuess) == 0) {
             printf("\n  정답입니다! 탈출 성공! 🎉\n");
             return 1; 
         } else {
             printf("\n  틀렸습니다. 다시 시도해보세요.\n"); 
         }
     }
+    displayExitMessage();
     maze();
     return 0;
 }
@@ -101,16 +105,10 @@ int executeGame() {
     set_utf8_encoding2();
     srand(time(NULL)); 
 
-    char secretPassword[MAX_INPUT_LENGTH];
-
-    generateRandomPassword(secretPassword);
-    savePasswordToFile(secretPassword);
-
-    displayWelcomeMessage();
-
-    runGame(secretPassword);
-
-    displayExitMessage();
-
+    printf("A");
+    generateRandomPassword();
+    printf("B");
+    savePasswordToFile();
+    printf("C");
     return 0;
 }

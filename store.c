@@ -1,8 +1,6 @@
 #include <stdio.h>
-
-extern int score;
-extern int clues[5];
-
+#include "data.h"
+#include "maze.h"
 int store() {
     int choice;
     
@@ -29,7 +27,7 @@ int store() {
         for (int i = 0; i < 5; i++) {
             // 조금 더 깔끔한 정렬을 위해 공백 조정
             printf("   %d. 📜 비밀번호 %d번째 단서 ", i + 1, i + 1);
-            if (clues[i] == 1) {
+            if (getPassword[i] == 1) {
                 printf("[ ✅ 보유중 ]\n");
             } else {
                 printf("[ ⬜ 구매가능 ]\n");
@@ -57,7 +55,7 @@ int store() {
         if (choice >= 1 && choice <= 5) {
             int index = choice - 1;
 
-            if (clues[index] == 1) {
+            if (getPassword[index] == 1) {
                 printf("\n  >>> ⚠️ \"그건 이미 가지고 있다냥!\"\n");
             }
             else if (score < 2000) {
@@ -65,7 +63,7 @@ int store() {
             }
             else {
                 score = score - 2000;
-                clues[index] = 1;              
+                getPassword[index] = 1;              
                 printf("\n  >>> 🎉 \"구매 고맙다냥! 여기 단서 받으라냥.\"\n");
             }
         } 
@@ -77,6 +75,6 @@ int store() {
         printf("\n  (계속하려면 엔터를 누르라냥...)");
         getchar(); // 엔터키 입력 대기
     }
-
+    maze();
     return 0; // 정상 종료
 }

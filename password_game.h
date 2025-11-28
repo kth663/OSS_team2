@@ -11,11 +11,11 @@
 #define DATA_FILE_NAME "password.txt"
 
 void set_utf8_encoding();
-void generateRandomPassword(char password[]);
-void savePasswordToFile(const char password[]);
+void generateRandomPassword();
+void savePasswordToFile();
 void clearInputBuffer();
 
-int runGame(const char *secretPassword);
+int runGame();
 
 void displayWelcomeMessage();
 void displayExitMessage();

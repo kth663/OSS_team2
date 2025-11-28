@@ -10,9 +10,9 @@
 #include "data.h"
 #include "quiz.c"
 #include "slot.c"
+#include "store.c"
+#include "slot and game.c"
 
-
-char* password;
 
 
 //void setCursorPos(int x,int y);
@@ -93,7 +93,7 @@ int maze(){
             if(map[y][x] == 'E'){
                 closeMaze();
                 //출구 함수 불러오는 위치
-                runGame(password);
+                runGame();
                 break;
             }
             else if(map[y][x] == 'G'){
@@ -121,6 +121,18 @@ int maze(){
                 break;
             }
             
+        }
+        if(input == 'r'){
+            closeMaze();
+            //상점 함수 불러오는 위치
+            store();
+            break;
+        }
+        else if(input == 'e'){
+            closeMaze();
+            //인벤토리 함수 불러오는 위치
+            openInventory();
+            break;
         }
         if(input == 'w'){
             ny--;

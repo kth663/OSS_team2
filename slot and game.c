@@ -4,7 +4,10 @@
 #include <stdlib.h>  // system("cls"), rand, srand
 #include <windows.h> // Sleep
 #include <time.h>    // time
+#include "data.h"
+#include "maze.h"
 
+/*
 #define ROWS 3
 #define COLS 20   // 아래 미로 문자열 길이와 맞춰둠
 
@@ -17,9 +20,11 @@ char maze[ROWS][COLS + 1] = {
 int player_r = 1;
 int player_c = 2;
 
+*/
+
 int money = 200;
 int luckyCharm = 0;
-
+/*
 void printMaze(void);
 int  canMove(int nr, int nc);
 void openInventory(void);
@@ -108,7 +113,7 @@ int canMove(int nr, int nc) {
     if (maze[nr][nc] == '#') return 0;
     return 1;
 }
-
+*/
 void openInventory(void) {
     system("cls");
     printf("===== 인벤토리 =====\n");
@@ -116,8 +121,9 @@ void openInventory(void) {
     printf("행운의 부적: %d 개\n", luckyCharm);
     printf("\n아무 키나 누르면 돌아갑니다.\n");
     _getch();
+    maze();
 }
-
+/*
 void openShop(void) {
     while (1) {
         system("cls");
@@ -247,3 +253,4 @@ void spinAnimation(int* s1, int* s2, int* s3, int useLucky) {
     *s3 = temp3;
     printf("\n");
 }
+*/
