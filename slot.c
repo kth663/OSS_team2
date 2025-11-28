@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <windows.h>
+#include "maze.h"
 
 void spinAnimation(int* s1, int* s2, int* s3);
 
@@ -57,6 +58,8 @@ void runSlotMachine(void) {
     printf("============================================\n");
     printf("||       THANK YOU FOR PLAYING!           ||\n");
     printf("============================================\n");
+
+    maze();
 }
 
 // 슬롯 애니메이션

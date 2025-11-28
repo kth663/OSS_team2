@@ -11,7 +11,7 @@
 #include "quiz.c"
 #include "slot.c"
 
-int score = 0;
+
 char* password;
 
 
@@ -44,6 +44,8 @@ void closeMaze(){
 }
 
 int maze(){
+
+    system("cls");
     
     // ■와 ●가 ??로 출력되는 문제 때문에 설정
     setlocale(LC_CTYPE, "ko_KR.UTF-8");
@@ -76,9 +78,7 @@ int maze(){
         Sleep(50);
     }
 
-    //플레이어의 초기 위치
-    int x = 1;
-    int y = 1;
+
 
     setCursorPos(x, y);
 

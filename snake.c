@@ -5,7 +5,7 @@
 #include<conio.h>
 #include<time.h>
 #include "maze.h"
-
+#include "data.h"
 
 
 
@@ -285,7 +285,7 @@ void snakeGame(){
     }
 
     
-
+    maze();
 
 
 }

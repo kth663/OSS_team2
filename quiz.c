@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "maze.h"  
 
 #define MAX_QUESTIONS 50 
 #define MAX_STRLEN 256
@@ -81,5 +82,7 @@ void quiz() {
         printf("정답은 ['%s'] 입니다.\n", answers[randomIndex]);
     }
 
-    system("pause");
+    //system("pause");
+
+    maze();
 }

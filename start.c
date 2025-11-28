@@ -3,6 +3,7 @@
 #include <conio.h>
 #include "start.h"
 #include "maze.c"
+#include "data.h"
 
 void gotoxy2(int x, int y) {
     COORD pos = {x, y};
@@ -79,7 +80,9 @@ void start_screen() {
     show_loading_bar();
     blink_press_enter();
 
-   system("color 07");
+    system("color 07");
 
-   maze();
+    x = 1;
+    y = 1; 
+    maze();
 }

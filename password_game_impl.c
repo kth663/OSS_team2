@@ -2,6 +2,7 @@
 #include <windows.h> 
 #include <io.h> 
 #include <time.h> 
+#include "maze.h"
 
 void set_utf8_encoding2() {
     if (SetConsoleOutputCP(65001) == 0) {
@@ -92,6 +93,7 @@ int runGame(const char *secretPassword) {
             printf("\n  틀렸습니다. 다시 시도해보세요.\n"); 
         }
     }
+    maze();
     return 0;
 }
 
