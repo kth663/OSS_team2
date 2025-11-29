@@ -43,7 +43,7 @@ void closeMaze(){
     
 }
 
-int maze(){
+void maze(){
 
     system("cls");
     
@@ -106,7 +106,16 @@ int maze(){
                 closeMaze();
                 //타이밍 맞추는 함수 불러오는 위치
                 timing_game();
-                break;
+                for (int i=0; i<27; i++){
+                    for (int j=0; j<27; j++){
+                        char ch = map[i][j];
+                        printShape(ch);
+                    }
+                    printf("\n");
+                }
+                setCursorPos(x, y);
+                printf("● ");
+                continue;
             }
             else if(map[y][x] == 'R'){
                 closeMaze();

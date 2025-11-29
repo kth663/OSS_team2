@@ -2,7 +2,7 @@
 #define GLOBALS_H  
 
 
-int maze();
+void maze();
 
 
 

@@ -186,5 +186,4 @@ void timing_game() {
         }
     }
 
-    maze();
 }
