@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <windows.h>
 #include <conio.h>
+#include <string.h>
 #include "start.h"
-#include "maze.c"
+#include "maze.h"
+#include "data.h"
 #include "data.h"
 
 void gotoxy2(int x, int y) {

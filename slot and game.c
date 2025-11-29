@@ -6,6 +6,7 @@
 #include <time.h>    // time
 #include "data.h"
 #include "maze.h"
+#include "slot and game.h"
 
 /*
 #define ROWS 3

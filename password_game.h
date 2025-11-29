@@ -13,7 +13,6 @@
 void set_utf8_encoding();
 void generateRandomPassword();
 void savePasswordToFile();
-void clearInputBuffer();
 
 int runGame();
 

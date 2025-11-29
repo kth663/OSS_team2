@@ -14,7 +14,7 @@ void set_utf8_encoding() {
     SetConsoleOutputCP(65001);
 } 
 
-void clearInputBuffer() {
+static void clearInputBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }

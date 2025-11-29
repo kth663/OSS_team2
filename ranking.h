@@ -18,7 +18,6 @@ typedef struct {
 
 
 void set_utf8_encoding();
-void clearInputBuffer();
 int compareRanks(const void *a, const void *b);
 int getUserInput(RankEntry *newEntry);
 int loadRanks(RankEntry ranks[]);

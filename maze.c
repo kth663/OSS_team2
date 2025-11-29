@@ -4,14 +4,14 @@
 #include<locale.h>
 #include<conio.h>
 
-#include "password_game_impl.c"
-#include "snake.c"
+#include "password_game.h"
+#include "snake.h"
 #include "timing.h"
 #include "data.h"
-#include "quiz.c"
-#include "slot.c"
-#include "store.c"
-#include "slot and game.c"
+#include "quiz.h"
+#include "slot.h"
+#include "store.h"
+#include "slot and game.h"
 
 
 
