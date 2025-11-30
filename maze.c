@@ -30,6 +30,42 @@ void printShape(char ch){
     }
 }
 
+void resetVisited(int v[27][27]){
+    for(int i = 0;i<27;i++){
+        for(int j = 0;j<27;j++){
+            v[i][j] = 0;
+        }
+    }
+}
+
+int dirX[4] = {0,1,0,-1};
+int dirY[4] = {1,0,-1,0};
+int findPath(char map[27][27],int v[27][27],int cx,int cy,int dx,int dy){
+    if(cx == dx && cy == dy){
+        return 1;
+    }
+    v[cy][cx] = 1;
+    int res = 0;
+    for(int i = 0;i<4;i++){
+        int nx = cx + dirX[i];
+        int ny = cy + dirY[i];
+
+        if(map[ny][nx] == 'X')
+            continue;
+        if (v[ny][nx] == 1)
+            continue;               
+        setCursorPos(nx, ny);
+        
+        res = findPath(map,v, nx, ny, dx, dy);
+        if(res == 1){
+            setCursorPos(cx, cy);
+            printf(". ");
+            break;
+        }
+    }
+    return res;
+}
+
 //미로 종료시 천천히 사라지게하는 함수
 void closeMaze(){
     for(int i = 27/3;i>=0;i--){
@@ -46,6 +82,8 @@ void closeMaze(){
 void maze(){
 
     system("cls");
+
+    item[4] = 1;//테스트를 위해 아이템 지급
     
     // ■와 ●가 ??로 출력되는 문제 때문에 설정
     setlocale(LC_CTYPE, "ko_KR.UTF-8");
@@ -56,6 +94,7 @@ void maze(){
     fopen_s(&mazeFile, "maze.txt", "r");
 
     char map[27][27];
+    int visited[27][27];
     //미로 불려오기
     for(int i = 0;i<27;i++){
         for(int j = 0;j<27;j++){
@@ -131,6 +170,29 @@ void maze(){
             }
             
         }
+        if(item[4] == 1){
+            if(input == '1'){
+                resetVisited(visited);
+                findPath(map, visited, x, y, 13, 3);
+            }
+            else if(input == '2'){
+                resetVisited(visited);
+                findPath(map, visited, x, y, 19, 13);
+            }
+            else if(input == '3'){
+                resetVisited(visited);
+                findPath(map, visited, x, y, 13, 19);
+            }
+            else if(input == '4'){
+                resetVisited(visited);
+                findPath(map,visited, x, y, 17, 21);
+            }
+            else if(input == '5'){
+                resetVisited(visited);
+                findPath(map,visited, x, y, 25, 25);
+            }
+        }
+        
         if(input == 'r'){
             closeMaze();
             //상점 함수 불러오는 위치
