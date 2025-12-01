@@ -31,6 +31,7 @@ void snakeGame(){
     //명령어 실행후 메시지가 나오지 않게 함
     system("chcp 65001 > nul");
 
+    item[0] = 1;//테스트 용 임시 아이템 활성화
 
     system("cls");
     printf("Level 1 : 6 * 6\n");
@@ -256,6 +257,11 @@ void snakeGame(){
     //스코어 출력
     if(isClear == 1){
         printf("Game Clear!\n");
+        if(item[0] == 1){
+            printf("스코어 2배 아이템 소지중!!!\n");
+            clearScore *= 2;
+            timeScore *= 2;
+        }
         printf("Clear Score : %d\n",clearScore);
         printf("Time Score : %d\n",timeScore);
         printf("GetScore : %d + %d = %d\n",clearScore,timeScore,totalScore);
@@ -263,6 +269,10 @@ void snakeGame(){
     }
     else{
         printf("Game Over\n");
+        if(item[0] == 1){
+            printf("스코어 2배 아이템 소지중!!!\n");
+            timeScore *= 2;
+        }
         printf("GetScore : %d\n",totalScore);
 
     }
