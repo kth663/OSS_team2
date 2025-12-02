@@ -3,8 +3,9 @@
 #include <time.h>
 #include <windows.h>
 #include "maze.h"
+#include "luckcharm.h"
 
-void spinAnimation(int* s1, int* s2, int* s3);
+void spinAnimation(int* s1, int* s2, int* s3, int useCharm);
 
 // 슬롯머신 게임 루프
 void runSlotMachine(void) {
@@ -18,6 +19,7 @@ void runSlotMachine(void) {
     printf("||           SLOT MACHINE GAME            ||\n");
     printf("============================================\n");
     printf("시작 금액: %d 코인\n\n", money);
+    printf("보유 행운의 부적: %d개\n\n", getLuckyCharmCount());
 
     while (money > 0) {
         printf("베팅 금액을 입력하세요 (0 입력 시 종료): ");
@@ -34,8 +36,23 @@ void runSlotMachine(void) {
         money -= bet;
         printf("\n슬롯을 돌립니다...\n");
 
-        // spinAnimation에서 마지막 프레임을 화면에 출력 + 결과 반환
-        spinAnimation(&s1, &s2, &s3);
+        // 부적 사용 여부 결정
+        int useCharm = 0;
+        if (getLuckyCharmCount() > 0) {
+            printf("행운의 부적을 사용하시겠습니까? (%d개 남음, 1: 사용, 0: 사용 안 함): ", getLuckyCharmCount());
+            if (scanf_s("%d", &useCharm) != 1) useCharm = 0;
+        }
+
+        if (useCharm) {
+            if (useLuckyCharm()) {
+                printf("🎁 행운의 부적 사용! 슬롯 확률 상승!\n");
+            } else {
+                useCharm = 0; // 혹시 모를 안전장치
+            }
+        }
+
+        // 슬롯머신 돌리기
+        spinAnimation(&s1, &s2, &s3, useCharm);
 
         // 결과 판정
         if (s1 == s2 && s2 == s3) {
@@ -50,7 +67,8 @@ void runSlotMachine(void) {
             printf("😢 꽝! 다음 기회에...\n");
         }
 
-        printf("현재 잔액: %d 코인\n\n", money);
+        printf("현재 잔액: %d 코인\n", money);
+        printf("남은 행운의 부적: %d\n\n", getLuckyCharmCount());
         Sleep(1500);
     }
 
@@ -59,18 +77,34 @@ void runSlotMachine(void) {
     printf("||       THANK YOU FOR PLAYING!           ||\n");
     printf("============================================\n");
 
-    maze();
+    maze(); // 슬롯머신 종료 후 미로 게임 호출
 }
 
 // 슬롯 애니메이션
-void spinAnimation(int* s1, int* s2, int* s3) {
-    const char* symbols[] = { "CHERRY", "LEMON", "BAR", "7", "BELL" };
-    int temp1, temp2, temp3;
+void spinAnimation(int* s1, int* s2, int* s3, int useCharm) {
+    const char* allSymbols[] = { "CHERRY", "LEMON", "BAR", "7", "BELL" };
+    const char* symbols[5];
+    int symbolCount = 5;
 
+    // 부적 사용 시 심볼 1개 제거
+    if (useCharm) {
+        int removeIndex = rand() % 5;
+        int j = 0;
+        for (int i = 0; i < 5; i++) {
+            if (i != removeIndex) {
+                symbols[j++] = allSymbols[i];
+            }
+        }
+        symbolCount = 4;
+    } else {
+        for (int i = 0; i < 5; i++) symbols[i] = allSymbols[i];
+    }
+
+    int temp1, temp2, temp3;
     for (int i = 0; i < 12; i++) {
-        temp1 = rand() % 5;
-        temp2 = rand() % 5;
-        temp3 = rand() % 5;
+        temp1 = rand() % symbolCount;
+        temp2 = rand() % symbolCount;
+        temp3 = rand() % symbolCount;
 
         printf("\r|  %-6s|  %-6s|  %-6s|", symbols[temp1], symbols[temp2], symbols[temp3]);
         fflush(stdout);
