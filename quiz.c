@@ -4,16 +4,15 @@
 #include <time.h>
 #include <conio.h> 
 #include <windows.h> 
-#include "data.h"
+#include "data.h" 
 #include "maze.h"
 
 #define MAX_QUESTIONS 50 
 #define MAX_STRLEN 256
 
-
-
 char questions[MAX_QUESTIONS][MAX_STRLEN];
 char answers[MAX_QUESTIONS][MAX_STRLEN];
+char initials[MAX_QUESTIONS][MAX_STRLEN]; 
 int questionCount = 0;
 
 void gotoxy(int x, int y) {
@@ -35,15 +34,18 @@ void removeNewline(char* str) {
 void quiz() {
     FILE* questionFile;
     FILE* answerFile;
+    FILE* initialFile;
     
     if (questionCount == 0) {
         questionFile = fopen("questions.txt", "r");
         answerFile = fopen("answers.txt", "r");
+        initialFile = fopen("initials.txt", "r"); 
 
-        if (questionFile == NULL || answerFile == NULL) {
-            printf("\n [ERROR] 데이터 파일 없음.\n");
+        if (questionFile == NULL || answerFile == NULL || initialFile == NULL) {
+            printf("\n [ERROR] 데이터 파일(문제, 정답, 초성) 중 하나가 없습니다.\n");
             if (questionFile) fclose(questionFile);
             if (answerFile) fclose(answerFile);
+            if (initialFile) fclose(initialFile);
             printf(" (엔터 복귀)");
             while(getchar() != '\n'); getchar();
             return;
@@ -51,13 +53,17 @@ void quiz() {
 
         while (questionCount < MAX_QUESTIONS && 
                fgets(questions[questionCount], MAX_STRLEN, questionFile) != NULL &&
-               fgets(answers[questionCount], MAX_STRLEN, answerFile) != NULL) {
+               fgets(answers[questionCount], MAX_STRLEN, answerFile) != NULL &&
+               fgets(initials[questionCount], MAX_STRLEN, initialFile) != NULL) {
+            
             removeNewline(questions[questionCount]);
             removeNewline(answers[questionCount]);
+            removeNewline(initials[questionCount]);
             questionCount++;
         }
         fclose(questionFile);
         fclose(answerFile);
+        fclose(initialFile);
     }
 
     if (questionCount == 0) return;
@@ -68,12 +74,13 @@ void quiz() {
     system("cls"); 
     
     printf("\n");
-    printf("             /\\____/\\    \n");
-    printf("            (  o  o  )     < \"반갑습니다.\"\n"); 
-    printf("            (    L   )     < \"문제를 드리겠습니다.\"\n");
-    printf("           /|   __   |\\    \n");
-    printf("          ( |  |  |  | )   \n");
-    printf("           \\|__|__|__/     \n");
+    printf("              ,     ,  \n");
+    printf("             / \\___/ \\ \n");
+    printf("            (  @   @  )      < \"멍!! 멍!!\"\n");
+    printf("            /   > <   \\      < \"내가 왔다멍! 퀴즈 풀라멍!\"\n");
+    printf("           /  _______  \\     \n");
+    printf("          /  /       \\  \\    \n");
+    printf("         (_ /         \\ _)   \n");
     printf("\n");
     printf("   ================================================================\n");
     printf("       🔔   도  전  !     F A N T A S T I C     골  든  벨   🔔   \n");
@@ -82,66 +89,88 @@ void quiz() {
 
     for(int i=0; i<3; i++) {
         Sleep(400); 
-        
-        gotoxy(12, 2); 
-        printf("(  -  -  )"); 
-        
+        gotoxy(15, 2); printf("(  -   -  )"); 
         Sleep(200); 
-
-        gotoxy(12, 2); 
-        printf("(  o  o  )");
+        gotoxy(15, 2); printf("(  @   @  )"); 
     }
 
-    gotoxy(0, 13); 
+    gotoxy(0, 14); 
 
     printf("   +--------------------------------------------------------------+\n");
     printf("   |                                                              |\n");
     printf("   |  Q. ");
-    
     typeWriter(questions[randomIndex]);
-    
     printf("\n"); 
     printf("   |                                                              |\n");
     printf("   +--------------------------------------------------------------+\n");
-    printf("\n");
-    printf("     ✍️  정답을 칠판에 적어주세요 : ");
-
+    
+    int hintUsed = 0;
     char userAnswer[MAX_STRLEN];
+
+    while(1) {
+        gotoxy(0, 19);
+        printf("   ----------------------------------------------------------------\n");
+        printf("    [1] ✍️ 정답 입력하기    [2] 💡 초성 힌트 보기 (500점 차감) \n");
+        printf("   ----------------------------------------------------------------\n");
+        
+        if(hintUsed) {
+            gotoxy(0, 18);
+            printf("    💡 힌트 : [ %s ]          ", initials[randomIndex]);
+        }
+
+        gotoxy(0, 23);
+        printf("    👉 선택 : ");
+        
+        int key = _getch();
+        int choice = key - '0';
+
+        if (choice == 2) {
+            if (!hintUsed) {
+                hintUsed = 1;
+                /*힌트 사용시 여기서 뭔가 감소하게 만들기*/
+            }
+        }
+        else if (choice == 1) {
+            break;
+        }
+    }
+
+    gotoxy(0, 23); printf("    ✍️ 정답을 칠판에 적어주라멍 :                   ");
+    gotoxy(34, 23);
+
     if (fgets(userAnswer, MAX_STRLEN, stdin) != NULL) {
         removeNewline(userAnswer);
     }
 
-    printf("\n     결과 확인 중...");
+    printf("\n     킁킁... 정답 냄새를 맡는 중이다멍...");
     typeWriter(".........."); 
     printf("\n\n");
     
     if (strcmp(userAnswer, answers[randomIndex]) == 0) {
-        gotoxy(12, 2); 
-        printf("(  ^  ^  )"); 
-        gotoxy(0, 22); 
+        gotoxy(15, 2); printf("(  ^   ^  )"); 
+        gotoxy(0, 27); 
 
         printf("   ****************************************************************\n");
-        printf("   * ⭕   정   답   입   니   다   ! !   ⭕                  *\n");
+        printf("   * ⭕   딩   동   댕   ! ! !   ⭕                  *\n");
         printf("   ****************************************************************\n");
-        printf("\n            ✨  축하합니다! 1000점을 획득하셨습니다.  ✨\n");
         
-        score += 1000; 
+        int reward = (hintUsed) ? 500 : 1000;
+        printf("\n            ✨  대 단 하 다 멍 !  (+%d점 획득)  ✨\n", reward);
+        
+        score += reward; 
     } else {
-        gotoxy(12, 2); 
-        printf("(  x  x  )"); 
-        gotoxy(0, 22); 
+        gotoxy(15, 2); printf("(  T   T  )"); 
+        gotoxy(0, 27); 
 
         printf("   ################################################################\n");
-        printf("   #              ❌   오   답   입   니   다   ❌                #\n");
+        printf("   #              ❌   땡   !   틀   렸   다   멍   ❌                #\n");
         printf("   ################################################################\n");
-        printf("\n            아쉽네요. 정답은 [ %s ] 입니다.\n", answers[randomIndex]);
+        printf("\n            아쉽다멍... 정답은 [ %s ] 였다멍!\n", answers[randomIndex]);
     }
 
     printf("\n   ================================================================\n");
-    printf("     (계속하려면 아무 키나 누르세요...)\n");
+    printf("     (계속하려면 아무 키나 누르라멍...)\n");
     _getch();
 
     maze();
-
-    return 0;
 }
