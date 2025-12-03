@@ -67,6 +67,9 @@ void quiz() {
     printf("===================================\n");
     printf("정답 입력: ");
 
+    while (getchar() != '\n'){
+    }
+    
     // 입력 받기
     char userAnswer[MAX_STRLEN];
     if (fgets(userAnswer, MAX_STRLEN, stdin) != NULL) {

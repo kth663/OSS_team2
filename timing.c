@@ -104,6 +104,7 @@ void timing_game() {
         int faded = 0;
 
         double visible_limit = 2.7;
+        item[1] = 1;
         if (item[1] == 1){
             visible_limit = 5.4;
         }
