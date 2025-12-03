@@ -4,6 +4,7 @@
 #include <time.h> 
 #include "maze.h"
 #include "data.h"
+#include "ranking.h"
 
 void set_utf8_encoding2() {
     if (SetConsoleOutputCP(65001) == 0) {
@@ -45,7 +46,7 @@ void savePasswordToFile() {
 
 }
 
-static void clearInputBuffer() {
+void clearInputBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
@@ -91,13 +92,13 @@ int runGame() {
 
         if (strcmp(password, userGuess) == 0) {
             printf("\n  정답입니다! 탈출 성공! 🎉\n");
-            return 1; 
+            break;
         } else {
             printf("\n  틀렸습니다. 다시 시도해보세요.\n"); 
         }
     }
     displayExitMessage();
-    maze();
+    executeRankingManager();
     return 0;
 }
 

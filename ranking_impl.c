@@ -14,7 +14,7 @@ void set_utf8_encoding() {
     SetConsoleOutputCP(65001);
 } 
 
-static void clearInputBuffer() {
+void _clearInputBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
@@ -41,7 +41,7 @@ int getUserInput(RankEntry *newEntry) {
     if (len > 0 && inputBuffer[len - 1] == '\n') {
         inputBuffer[len - 1] = '\0';
     } else {
-        clearInputBuffer(); 
+        _clearInputBuffer(); 
     }
     
     score_val = strtol(inputBuffer, &endptr, 10);
@@ -70,7 +70,7 @@ int getUserInput(RankEntry *newEntry) {
         }
 
         if (!hasNewline) {
-            clearInputBuffer(); 
+            _clearInputBuffer(); 
         }
 
         if (input_len == 3) {
@@ -140,7 +140,7 @@ void printRanks(const RankEntry ranks[], int count) {
 void displayExitRankingMessage(const char *filename) {
     printf("\n** 랭킹 정보가 %s 파일에 저장되었습니다. **\n", filename);
     printf("\n[창을 닫으려면 엔터(Enter) 키를 누르세요...]\n");
-    clearInputBuffer(); 
+    _clearInputBuffer(); 
     getchar();
 }
 
@@ -148,6 +148,8 @@ void displayExitRankingMessage(const char *filename) {
 int executeRankingManager() {
 
     set_utf8_encoding(); 
+
+    system("cls");
 
     srand(time(NULL)); 
 
