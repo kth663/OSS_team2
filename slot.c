@@ -115,5 +115,4 @@ void spinAnimation(int* s1, int* s2, int* s3, int useCharm) {
     *s2 = temp2;
     *s3 = temp3;
     printf("\n"); 
-    printf("test"); 
 }
