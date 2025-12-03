@@ -114,5 +114,6 @@ void spinAnimation(int* s1, int* s2, int* s3, int useCharm) {
     *s1 = temp1;
     *s2 = temp2;
     *s3 = temp3;
-    printf("\n"); // 마지막 줄 내려주기
+    printf("\n"); 
+    printf("test"); 
 }
