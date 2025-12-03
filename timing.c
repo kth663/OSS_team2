@@ -103,11 +103,16 @@ void timing_game() {
 
         int faded = 0;
 
+        double visible_limit = 2.7;
+        if (item[1] == 1){
+            visible_limit = 5.4;
+        }
+
         while (1) {
             clock_t now = clock();
             t = (double)(now - start_time) / CLOCKS_PER_SEC;
 
-            if (t <= 2.7) {
+            if (t <= visible_limit) {
                 char buf[64];
                 sprintf(buf, "%.2f초", t);
                 const char *time_lines[] = { buf };
