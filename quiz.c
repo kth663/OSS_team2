@@ -173,5 +173,5 @@ void quiz() {
     printf("     (계속하려면 아무 키나 누르라멍...)\n");
     _getch();
 
-    maze();
+    maze(1);
 }

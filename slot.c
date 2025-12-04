@@ -77,7 +77,7 @@ void runSlotMachine(void) {
     printf("||       THANK YOU FOR PLAYING!           ||\n");
     printf("============================================\n");
 
-    maze(); // 슬롯머신 종료 후 미로 게임 호출
+    maze(1); // 슬롯머신 종료 후 미로 게임 호출
 }
 
 // 슬롯 애니메이션

@@ -269,5 +269,5 @@ void start_screen(void) {
 
     x = 1;
     y = 1;
-    maze();
+    maze(1);
 }

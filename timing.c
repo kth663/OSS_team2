@@ -136,6 +136,7 @@ void timing_game() {
                     break;
                 } else if (c == 27) {
                     system("cls");
+                    maze(1);
                     return;
                 }
             }
@@ -184,6 +185,7 @@ void timing_game() {
             key = getch();
             if (key == 27) {
                 system("cls");
+                maze(1);
                 return;
             }
             if (key == 13) {

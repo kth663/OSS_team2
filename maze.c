@@ -92,7 +92,7 @@ void closeMaze(){
     
 }
 
-void maze(){
+void maze(int do_Animation){
 
     system("cls");
 
@@ -127,9 +127,36 @@ void maze(){
             printShape(ch);
         }
         printf("\n");
-        Sleep(50);
+        if(do_Animation)
+            Sleep(50);
     }
 
+
+    setCursorPos(30,1);
+    printf("┌──────────────────────────────────────┐");
+
+    setCursorPos(30,2);
+    printf("│G: 뱀게임(1)                          │");
+    setCursorPos(30,3);
+    printf("│T: 타이밍 게임(2)                     │");
+    setCursorPos(30,4);
+    printf("│R: 넌센스 퀴즈(3)                     │");
+    setCursorPos(30,5);
+    printf("│L: 슬롯머신(4)                        │");
+    setCursorPos(30,6);
+    printf("│E: 출구(5)                            │");
+
+    setCursorPos(30,7);
+    printf("└──────────────────────────────────────┘");
+
+    setCursorPos(30,9);
+    printf("┌────────────────────────────┐");
+    setCursorPos(30,10);
+    printf("│e: 인벤토리 열기            │");
+    setCursorPos(30,11);
+    printf("│r: 상점 열기                │");
+    setCursorPos(30,12);
+    printf("└────────────────────────────┘");
 
 
     setCursorPos(x, y);
@@ -158,16 +185,7 @@ void maze(){
                 closeMaze();
                 //타이밍 맞추는 함수 불러오는 위치
                 timing_game();
-                for (int i=0; i<27; i++){
-                    for (int j=0; j<27; j++){
-                        char ch = map[i][j];
-                        printShape(ch);
-                    }
-                    printf("\n");
-                }
-                setCursorPos(x, y);
-                printf("● ");
-                continue;
+                break;
             }
             else if(map[y][x] == 'R'){
                 closeMaze();
@@ -212,13 +230,13 @@ void maze(){
         }
         
         if(input == 'r'){
-            closeMaze();
+            //closeMaze();
             //상점 함수 불러오는 위치
             store();
             break;
         }
         else if(input == 'e'){
-            closeMaze();
+            //closeMaze();
             //인벤토리 함수 불러오는 위치
             openInventory();
             break;

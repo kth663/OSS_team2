@@ -122,7 +122,7 @@ void openInventory(void) {
     printf("행운의 부적: %d 개\n", luckyCharm);
     printf("\n아무 키나 누르면 돌아갑니다.\n");
     _getch();
-    maze();
+    maze(0);
 }
 /*
 void openShop(void) {

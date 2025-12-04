@@ -2,7 +2,7 @@
 #define GLOBALS_H  
 
 
-void maze();
+void maze(int do_Animation);
 
 
 

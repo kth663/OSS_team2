@@ -123,7 +123,7 @@ int store() {
         }
     }
 
-    maze();
+    maze(0);
     
     return 0;
 }

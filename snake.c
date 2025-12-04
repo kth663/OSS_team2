@@ -295,7 +295,7 @@ void snakeGame(){
     }
 
     
-    maze();
+    maze(1);
 
 
 }
