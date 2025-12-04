@@ -34,10 +34,17 @@ void snakeGame(){
     item[0] = 1;//테스트 용 임시 아이템 활성화
 
     system("cls");
-    printf("Level 1 : 6 * 6\n");
-    printf("Level 2 : 8 * 8\n");
-    printf("Level 3 : 10 * 10\n");
-    printf("Enter level -> ");
+
+    printf("┌────────────────────────────────┐\n");
+    printf("│레벨 1 : 6 X 6 사이즈           │\n");
+    printf("│레벨 2 : 8 X 8 사이즈           │\n");
+    printf("│레벨 3 : 10 X 10 사이즈         │\n");
+    printf("└────────────────────────────────┘\n");
+    printf("\n");
+    printf("원하는 레벨을 입력하세요\n");
+    printf(">> ");
+    
+    
     int level = 1;
     int mapSize = 5;
     int speed = 500;
@@ -270,33 +277,38 @@ void snakeGame(){
     int totalScore = clearScore + timeScore;
     
     //스코어 출력
+    printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n");
     if(isClear == 1){
-        printf("Game Clear!\n");
+        printf("┃Game Clear!                      ┃\n");
         if(item[0] == 1){
-            printf("스코어 2배 아이템 소지중!!!\n");
+            printf("┃스코어 2배 아이템 소지중!!!      ┃\n");
             clearScore *= 2;
             timeScore *= 2;
         }
-        printf("Clear Score : %d\n",clearScore);
-        printf("Time Score : %d\n",timeScore);
-        printf("GetScore : %d + %d = %d\n",clearScore,timeScore,totalScore);
+        printf("┃Clear Score : %-4d               ┃\n",clearScore);
+        printf("┃Time Score : %-3d                 ┃\n",timeScore);
+        printf("┃GetScore : %-4d + %-3d = %-4d     ┃\n",clearScore,timeScore,clearScore + timeScore);
 
     }
     else{
-        printf("Game Over\n");
+        printf("┃Game Over                        ┃\n");
         if(item[0] == 1){
-            printf("스코어 2배 아이템 소지중!!!\n");
+            printf("┃스코어 2배 아이템 소지중!!!      ┃\n");
             timeScore *= 2;
         }
-        printf("GetScore : %d\n",totalScore);
+        printf("┃GetScore : %-3d                   ┃\n",totalScore);
 
     }
     
     //게임에서 얻은 스코어를 전체 스코어에 반영
     score += totalScore;
-    printf("Score : %d\n",score);
-
-    printf("\n\nr : restart\nq : quit");
+    printf("┃Score : %-4d                     ┃\n",score);
+    printf("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+    printf("┏━━━━━━━━━━━━━━━━━━┓\n");
+    printf("┃r : restart       ┃\n");
+    printf("┃q : quit          ┃\n");
+    printf("┗━━━━━━━━━━━━━━━━━━┛\n");
+    printf(">> ");
 
     //입력에 따라 재시작 또는 종료
     while(1){
