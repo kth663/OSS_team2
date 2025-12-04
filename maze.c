@@ -66,6 +66,19 @@ int findPath(char map[27][27],int v[27][27],int cx,int cy,int dx,int dy){
     return res;
 }
 
+void resetMaze(char map[27][27]){
+    for(int i = 0;i<27;i++){
+        for(int j= 0;j<27;j++){
+            char ch = map[i][j];
+            if(ch == 'X')
+                continue;
+            setCursorPos(j, i);
+            printShape(ch);
+        }
+        printf("\n");
+    }
+}
+
 //미로 종료시 천천히 사라지게하는 함수
 void closeMaze(){
     for(int i = 27/3;i>=0;i--){
@@ -173,22 +186,27 @@ void maze(){
         if(item[4] == 1){
             if(input == '1'){
                 resetVisited(visited);
+                resetMaze(map);
                 findPath(map, visited, x, y, 13, 3);
             }
             else if(input == '2'){
                 resetVisited(visited);
+                resetMaze(map);
                 findPath(map, visited, x, y, 19, 13);
             }
             else if(input == '3'){
                 resetVisited(visited);
+                resetMaze(map);
                 findPath(map, visited, x, y, 13, 19);
             }
             else if(input == '4'){
                 resetVisited(visited);
+                resetMaze(map);
                 findPath(map,visited, x, y, 17, 21);
             }
             else if(input == '5'){
                 resetVisited(visited);
+                resetMaze(map);
                 findPath(map,visited, x, y, 25, 25);
             }
         }
