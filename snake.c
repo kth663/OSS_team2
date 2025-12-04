@@ -74,9 +74,24 @@ void snakeGame(){
     //맵 생성
     for(int i = 0;i<mapSize;i++){
         for(int j = 0;j<mapSize;j++){
-            if(i == 0 || j == 0 || i == mapSize-1 || j == mapSize-1){
-                checkMap[j][i] = 1;
-                printf("■ ");
+            checkMap[j][i] = 1;
+            if(i == 0 && j == 0){
+                printf("┏━");
+            }
+            else if(j == mapSize - 1 && i == 0){
+                printf("┓ ");
+            }
+            else if(j == 0 && i == mapSize - 1){
+                printf("┗━");
+            }
+            else if(j == mapSize - 1 && i == mapSize -1){
+                printf("┛ ");
+            }
+            else if(j == 0 || j == mapSize - 1){
+                printf("┃ ");
+            }
+            else if(i == 0 || i == mapSize - 1){
+                printf("━━");
             }
             else{
                 checkMap[j][i] = 0;
