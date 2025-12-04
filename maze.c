@@ -20,7 +20,7 @@
 //미로의 문자에 따라 모양을 출력하는 함수
 void printShape(char ch){
     if(ch == 'X'){
-        printf("■ ");
+        printf("┃ ");
     }
     else if(ch == 'O'){
         printf("  ");
@@ -59,7 +59,19 @@ int findPath(char map[27][27],int v[27][27],int cx,int cy,int dx,int dy){
         res = findPath(map,v, nx, ny, dx, dy);
         if(res == 1){
             setCursorPos(cx, cy);
-            printf(". ");
+            if(i == 0){
+                printf("▽ ");
+            }
+            else if(i == 1){
+                printf("▷ ");
+            }
+            else if(i == 2){
+                printf("△ ");
+            }
+            else if(i == 3){
+                printf("◁ ");
+            }
+            
             break;
         }
     }
@@ -124,6 +136,42 @@ void maze(int do_Animation){
     for(int i = 0;i<27;i++){
         for(int j= 0;j<27;j++){
             char ch = map[i][j];
+            if(ch == 'X'){
+                if(i != 0 && map[i-1][j] == 'X' && j != 26 && map[i][j+1] == 'X' && i != 26 && map[i+1][j] == 'X'){
+                    printf("┣━");
+                }
+                else if(j != 0 && map[i][j-1] == 'X' && j != 26 && map[i][j+1] == 'X' && i != 26 && map[i+1][j] == 'X'){
+                    printf("┳━");
+                }
+                else if(j != 0 && map[i][j-1] == 'X' && i != 0 && map[i-1][j] == 'X' && i != 26 && map[i+1][j] == 'X'){
+                    printf("┫ ");
+                }
+                else if(j != 0 && map[i][j-1] == 'X' && i != 0 && map[i-1][j] == 'X' && j != 26 && map[i][j+1] == 'X'){
+                    printf("┻━");
+                }
+                else if(i != 0 && map[i-1][j] == 'X' && j != 26 && map[i+1][j] == 'X'){
+                    printf("┃ ");
+                }
+                else if(j != 0 && map[i][j-1] == 'X' && j != 26 && map[i][j+1] == 'X'){
+                    printf("━━");
+                }
+                else if(i != 26 && map[i+1][j] == 'X' && j != 26 && map[i][j+1] == 'X'){
+                    printf("┏━");
+                }
+                else if(i != 0 && map[i-1][j] == 'X' && j != 26 && map[i][j+1] == 'X'){
+                    printf("┗━");
+                }
+                else if(i != 0 && map[i-1][j] == 'X' && j != 0 && map[i][j-1] == 'X'){
+                    printf("┛ ");
+                }
+                else if(i != 26 && map[i+1][j] == 'X' && j != 0 && map[i][j-1] == 'X'){
+                    printf("┓ ");
+                }
+                else{
+                    printf("  ");
+                }
+                continue;
+            }
             printShape(ch);
         }
         printf("\n");
