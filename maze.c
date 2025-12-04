@@ -149,7 +149,7 @@ void maze(int do_Animation){
                 else if(j != 0 && map[i][j-1] == 'X' && i != 0 && map[i-1][j] == 'X' && j != 26 && map[i][j+1] == 'X'){
                     printf("┻━");
                 }
-                else if(i != 0 && map[i-1][j] == 'X' && j != 26 && map[i+1][j] == 'X'){
+                else if(i != 0 && map[i-1][j] == 'X' && i != 26 && map[i+1][j] == 'X'){
                     printf("┃ ");
                 }
                 else if(j != 0 && map[i][j-1] == 'X' && j != 26 && map[i][j+1] == 'X'){
