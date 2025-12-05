@@ -20,42 +20,37 @@ void typeWriter_store(const char* str, int speed) {
     }
 }
 
-// 고양이(버거팬츠) 표정 변경
 void setCatFace(const char* faceType) {
-    // 얼굴 지우기
-    for(int i=3; i<=8; i++) {
+    for(int i=4; i<=9; i++) {
         gotoxy_store(35, i); printf("                         ");
     }
 
-    // 기본 얼굴
     if (strcmp(faceType, "normal") == 0) {
-        gotoxy_store(35, 3); printf("      /\\___/\\");
-        gotoxy_store(35, 4); printf("     (  o o  )");
-        gotoxy_store(35, 5); printf("     (   ^   )");
-        gotoxy_store(35, 6); printf("      \\  ~  /");
-        gotoxy_store(35, 7); printf("      /     \\");
+        gotoxy_store(35, 6); printf("      /\\___/\\");
+        gotoxy_store(35, 7); printf("     (  o o  )");
+        gotoxy_store(35, 8); printf("     (   ^   )");
+        gotoxy_store(35, 9); printf("      \\  ~  /");
+        gotoxy_store(35, 10); printf("      /     \\");
     }
-    // 놀란 얼굴 (구매 시)
+
     else if (strcmp(faceType, "surprised") == 0) {
-        gotoxy_store(35, 3); printf("      /\\___/\\");
-        gotoxy_store(35, 4); printf("     (  O O  ) !");
-        gotoxy_store(35, 5); printf("     (   0   )");
-        gotoxy_store(35, 6); printf("      \\  ~  /");
-        gotoxy_store(35, 7); printf("      /     \\");
+        gotoxy_store(35, 6); printf("      /\\___/\\");
+        gotoxy_store(35, 7); printf("     (  O O  ) !");
+        gotoxy_store(35, 8); printf("     (   0   )");
+        gotoxy_store(35, 9); printf("      \\  ~  /");
+        gotoxy_store(35, 10); printf("      /     \\");
     }
-    // 시무룩한 얼굴 (돈 없음)
+
     else if (strcmp(faceType, "sad") == 0) {
-        gotoxy_store(35, 3); printf("      /\\___/\\");
-        gotoxy_store(35, 4); printf("     (  - -  ) ...");
-        gotoxy_store(35, 5); printf("     (   ^   )");
-        gotoxy_store(35, 6); printf("      \\  ~  /");
-        gotoxy_store(35, 7); printf("      /     \\");
+        gotoxy_store(35, 6); printf("      /\\___/\\");
+        gotoxy_store(35, 7); printf("     (  - -  ) ...");
+        gotoxy_store(35, 8); printf("     (   ^   )");
+        gotoxy_store(35, 9); printf("      \\  ~  /");
+        gotoxy_store(35, 10); printf("      /     \\");
     }
 }
 
-// 우측 하단 대사 출력
 void say(const char* line1, const char* line2, const char* line3) {
-    // 대사창 지우기
     gotoxy_store(52, 14); printf("                         ");
     gotoxy_store(52, 15); printf("                         ");
     gotoxy_store(52, 16); printf("                         ");
@@ -73,7 +68,6 @@ int store() {
 
     system("cls");
 
-    // [1] 상단 배경 (노란색 벽지 느낌)
     printf("\n");
     printf("  ==========================================================================\n");
     printf("  ||                              CBNU STORE                              ||\n");
@@ -87,11 +81,8 @@ int store() {
     printf("  ||                                                                      ||\n");
     printf("  ==========================================================================\n");
 
-    // 고양이 그리기
     setCatFace("normal");
 
-    // [2] 하단 UI 프레임 그리기
-    // 왼쪽: 메뉴판 / 오른쪽: 대사창
     gotoxy_store(2, 12); printf("┌──────────────────────────────────────────────┐┌───────────────────────────┐");
     gotoxy_store(2, 13); printf("│                                              ││                           │");
     gotoxy_store(2, 14); printf("│                                              ││                           │");
@@ -102,15 +93,14 @@ int store() {
     gotoxy_store(2, 19); printf("│                                              ││          %-6d G         │", score);
     gotoxy_store(2, 20); printf("└──────────────────────────────────────────────┘└───────────────────────────┘");
 
-    // [3] 메뉴 목록 출력
-    gotoxy_store(4, 13); printf("[ 📜 단서 : 2000 G ]");
+    gotoxy_store(4, 13); printf("[ 단서 : 2000 G ]");
     for(int i=0; i<5; i++) {
         gotoxy_store(4, 14+i);
         if(itemArray[i] == 1) printf("%d. 비밀번호 %d단서 [품절]", i+1, i+1);
         else printf("%d. 비밀번호 %d단서", i+1, i+1);
     }
 
-    gotoxy_store(26, 13); printf(" [ 🔮 아이템 : 200 G ] ");
+    gotoxy_store(26, 13); printf(" [ 아이템 : 200 G ] ");
     char* itemNames[5] = {"뱀게임 부적", "타이밍 시계", "퀴즈 힌트북", "슬롯 행운권", "미로 나침반"};
     for(int i=0; i<5; i++) {
         gotoxy_store(28, 14+i);
@@ -120,14 +110,11 @@ int store() {
     
     gotoxy_store(4, 19); printf("0. 나가기");
 
-    // [4] 입장 멘트
     say("손님, 제가", "어떻게 도와드릴", "까요?");
 
     while (1) {
-        // 잔액 갱신
         gotoxy_store(59, 19); printf("%-6d", score);
 
-        // 입력 대기
         gotoxy_store(15, 19); 
         printf("선택 >> ");
         
@@ -136,7 +123,7 @@ int store() {
             while(getchar() != '\n'); 
             choice = -1;
         }
-        gotoxy_store(23, 19); printf("   "); // 지우기
+        gotoxy_store(23, 19); printf("   ");
 
         if (choice == 0) {
             setCatFace("normal");
