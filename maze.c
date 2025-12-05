@@ -108,7 +108,7 @@ void maze(int do_Animation){
 
     system("cls");
 
-    item[4] = 1;//테스트를 위해 아이템 지급
+    // item[4] = 1;//테스트를 위해 아이템 지급 << 2025-12-05 PM 5:29 이거 주석처리함
     
     // ■와 ●가 ??로 출력되는 문제 때문에 설정
     setlocale(LC_CTYPE, "ko_KR.UTF-8");
