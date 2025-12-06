@@ -4,12 +4,13 @@
 #include <windows.h>
 #include "maze.h"
 #include "luckcharm.h"
+#include "data.h"
+
 
 void spinAnimation(int* s1, int* s2, int* s3, int useCharm);
 
 // 슬롯머신 게임 루프
 void runSlotMachine(void) {
-    int money = 100;
     int bet;
     int s1, s2, s3;
 
@@ -18,28 +19,29 @@ void runSlotMachine(void) {
     printf("============================================\n");
     printf("||           SLOT MACHINE GAME            ||\n");
     printf("============================================\n");
-    printf("시작 금액: %d 코인\n\n", money);
+    printf("시작 점수: %d 코인\n\n", score);
     printf("보유 행운의 부적: %d개\n\n", getLuckyCharmCount());
 
-    while (money > 0) {
+    while (score > 0) {
         printf("베팅 금액을 입력하세요 (0 입력 시 종료): ");
         if (scanf_s("%d", &bet) != 1) {
             while (getchar() != '\n'); // 입력 버퍼 정리
             continue;
         }
         if (bet == 0) break;
-        if (bet > money) {
-            printf(">> 돈이 부족합니다!\n\n");
+        if (bet > score) {
+            printf(">> 점수가 부족합니다!\n\n");
             continue;
         }
 
-        money -= bet;
+        score -= bet;
         printf("\n슬롯을 돌립니다...\n");
 
         // 부적 사용 여부 결정
         int useCharm = 0;
         if (getLuckyCharmCount() > 0) {
-            printf("행운의 부적을 사용하시겠습니까? (%d개 남음, 1: 사용, 0: 사용 안 함): ", getLuckyCharmCount());
+            printf("행운의 부적을 사용하시겠습니까? (%d개 남음, 1: 사용, 0: 사용 안 함): ",
+                getLuckyCharmCount());
             if (scanf_s("%d", &useCharm) != 1) useCharm = 0;
         }
 
@@ -57,22 +59,22 @@ void runSlotMachine(void) {
         // 결과 판정
         if (s1 == s2 && s2 == s3) {
             printf(">>> 🎉 잭팟!! 베팅의 5배를 획득했습니다!\n");
-            money += bet * 5;
+            score += bet * 5;
         }
         else if (s1 == s2 || s2 == s3 || s1 == s3) {
             printf(">> ✨ 두 개 일치! 베팅의 2배를 획득했습니다!\n");
-            money += bet * 2;
+            score += bet * 2;
         }
         else {
             printf("😢 꽝! 다음 기회에...\n");
         }
 
-        printf("현재 잔액: %d 코인\n", money);
+        printf("현재 점수: %d 코인\n", score);
         printf("남은 행운의 부적: %d\n\n", getLuckyCharmCount());
         Sleep(1500);
     }
 
-    printf("\n게임 종료! 남은 코인: %d\n", money);
+    printf("\n게임 종료! 남은 코인: %d\n", score);
     printf("============================================\n");
     printf("||       THANK YOU FOR PLAYING!           ||\n");
     printf("============================================\n");
