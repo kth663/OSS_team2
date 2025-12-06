@@ -11,6 +11,10 @@ void spinAnimation(int* s1, int* s2, int* s3, int useCharm);
 
 // 슬롯머신 게임 루프
 void runSlotMachine(void) {
+
+    system("cls");   // 콘솔 화면 전체 지우기
+    printf("\n");    // 줄 정리 (커서가 정확한 첫 줄 위치로 이동)
+
     int bet;
     int s1, s2, s3;
 
