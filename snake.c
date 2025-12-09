@@ -44,6 +44,23 @@ void snakeGame(){
     printf("원하는 레벨을 입력하세요\n");
     printf(">> ");
     
+    setCursorPos(20,0);
+    printf("┌──────────────────────────────────────────────────┐");
+
+    setCursorPos(20,1);
+    printf("│ --게임 규칙--                                    │");
+    setCursorPos(20,2);
+    printf("│ W,A,S,D로 조작할 수 있습니다                     │");
+    setCursorPos(20,3);
+    printf("│ 사과를 먹으면 몸의 길이가 늘어납니다             │");
+    setCursorPos(20,4);
+    printf("│ 뱀이 맵전체를 채우면 추가 스코어를 얻습니다      │");
+    setCursorPos(20,5);
+    printf("│ 게임 플레이 시간에 따라 스코어를 얻습니다        │");
+    setCursorPos(20,6);
+
+    printf("└──────────────────────────────────────────────────┘");
+
     
     int level = 1;
     int mapSize = 5;
