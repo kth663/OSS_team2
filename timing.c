@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -14,13 +13,13 @@
 #define T_SCREEN_HEIGHT 25
 #define T_BOX_WIDTH     60
 
-    static const char* BUNNY_LINES[] = {
+static const char* BUNNY_LINES[] = {
     "토끼: 지금이다 싶을 때 ENTER!",
     "토끼: 10초를 몸으로 느껴봐요...",
     "토끼: 너무 서두르지는 말기!"
 };
 
-#define BUNNY_LINES_COUNT (sizeof(BUNNY_LINES)/ sizeof(BUNNY_LINES[0]))
+#define BUNNY_LINES_COUNT (sizeof(BUNNY_LINES) / sizeof(BUNNY_LINES[0]))
 
 // --------------------------------------------------
 //  기본 헬퍼 (이 파일 안에서만 사용)
@@ -52,6 +51,8 @@ static void t_draw_center_text(int y, const char* text) {
     t_gotoxy(x, y);
     printf("%s", text);
 }
+
+// 한글 기준 가운데 정렬
 static void t_draw_center_text_kor(int y, const char* text) {
     int width = t_get_console_width();
 
@@ -59,12 +60,11 @@ static void t_draw_center_text_kor(int y, const char* text) {
     for (int i = 0; text[i] != '\0'; i++) {
         unsigned char c = (unsigned char)text[i];
 
-        // CP949 기준: 0x80 이상이면 한글 등 2바이트 문자일 가능성 높음
-        if (c & 0x80) {
-            cols += 2;   // 화면에서 2칸 차지
-            i++;         // 다음 바이트는 건너뛰기
+        if (c & 0x80) {       // CP949 기준: 0x80 이상이면 2바이트 문자라고 보고 2칸
+            cols += 2;
+            i++;
         } else {
-            cols += 1;   // 영문/숫자/기호는 1칸
+            cols += 1;
         }
     }
 
@@ -144,70 +144,100 @@ static void t_draw_score_and_line(void) {
     }
 }
 
-// --------------------------------------------------
-//  토끼 캐릭터 (프레임마다 깨끗이 지우고, 살짝만 점프)
-// --------------------------------------------------
-// ---------------------------------------------
-//  토끼 + 말풍선 영역 지우기
-// ---------------------------------------------
-static void t_clear_bunny_area(int base_y) {
+static void draw_bunny_static(int base_y) {
+    const char* bunny[] = {
+        " (\\_/)",
+        " ( •_•)",
+        " / >o "
+    };
+
     int width = t_get_console_width();
-    for (int r = -1; r <= 4; r++) {
-        int y = base_y + r;
-        if (y < 0) continue;
-        t_gotoxy(0, y);
-        for (int i = 0; i < width; i++) putchar(' ');
+    int bunny_x = width - 18;
+
+    WORD old;
+    {
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+        old = csbi.wAttributes;
     }
+
+    t_set_color(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+
+    for (int r = 0; r < 3; r++) {
+        t_gotoxy(bunny_x, base_y + r);
+        printf("%s", bunny[r]);
+    }
+
+    t_set_color(old);
 }
 
-// ---------------------------------------------
-//  귀여운 말풍선 (꼬리 달린 구름 모양)
-//  bunny_x : 토끼가 시작되는 x 좌표
-//  base_y  : 토끼 위쪽 줄 기준
-// ---------------------------------------------
-static void t_draw_speech_bubble_cute(int bunny_x, int base_y, const char* msg) {
-    int len = (int)strlen(msg);
-    int inner = len + 2;          // 양쪽 여백
-    int bubble_width = inner + 2; // 양쪽 따옴표/점
+// --------------------------------------------------
+// 말풍선만 변경
+// --------------------------------------------------
+static void draw_bubble_only(int base_y, const char* msg) {
+    int width   = t_get_console_width();
+    int bunny_x = width - 18;      // 토끼 x (draw_bunny_static 와 동일 기준)
 
-    int bubble_x = bunny_x - bubble_width - 6; // 토끼 왼쪽으로 약간 띄우기
+    // 말풍선 위치와 크기(고정 너비로 단순하게)
+    int bubble_width = 28;         // 전체 가로 길이
+    int bubble_x     = bunny_x - (bubble_width + 4); // 토끼 왼쪽에 배치
     if (bubble_x < 0) bubble_x = 0;
-    int bubble_y = base_y - 1;                // 토끼보다 한 줄 위에서 시작
+    int bubble_y     = base_y - 1; // 토끼 바로 위에서 시작
+
+    // 먼저 말풍선 영역만 싹 지우기 (토끼 쪽 안 건드리도록)
+    for (int r = 0; r < 4; r++) {
+        t_gotoxy(bubble_x, bubble_y + r);
+        for (int i = 0; i < bubble_width; i++) {
+            putchar(' ');
+        }
+    }
 
     // 색 저장
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     WORD old_attr = csbi.wAttributes;
 
-    // 말풍선 색 (밝은 하늘색 느낌)
+    // 말풍선 색 (연한 하늘색 느낌)
     t_set_color(FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
 
-    // 윗줄:  .---------
+    // 윗줄:  .--------------------------.
     t_gotoxy(bubble_x, bubble_y);
     putchar(' ');
     putchar('.');
-    for (int i = 0; i < inner; i++) putchar('-');
+    for (int i = 0; i < bubble_width - 4; i++) putchar('-');
     putchar('.');
 
-    // 본문: (  메시지  )
+    // 본문: (  메시지 ...             )
     t_gotoxy(bubble_x, bubble_y + 1);
     putchar('(');
     putchar(' ');
+
+    // 메시지 출력 (너무 길면 그냥 잘려서 오른쪽으로 흘러가도 됨)
     printf("%s", msg);
+
+    // 남은 부분 공백 채우기
+    int printed_len = (int)strlen(msg);
+    int inner_width = bubble_width - 4; // 양쪽 괄호/공백 제외한 내부 폭 대충 맞추기
+    if (printed_len < inner_width) {
+        for (int i = 0; i < inner_width - printed_len; i++) {
+            putchar(' ');
+        }
+    }
+
     putchar(' ');
     putchar(')');
 
-    // 아랫줄:  '---------
+    // 아랫줄:  '--------------------------'
     t_gotoxy(bubble_x, bubble_y + 2);
     putchar(' ');
     putchar('\'');
-    for (int i = 0; i < inner; i++) putchar('-');
+    for (int i = 0; i < bubble_width - 4; i++) putchar('-');
     putchar('\'');
 
-    // 꼬리 (토끼 쪽으로 내려가는 작은 꼬리)
-    int tail_x = bunny_x - 3;
+    // 꼬리 (토끼 쪽으로 내려가는 작은 꼬리, 토끼에 안 겹치게 살짝만)
+    int tail_x = bubble_x + bubble_width - 4;
     int tail_y = bubble_y + 3;
-    t_gotoxy(tail_x, tail_y);
+    t_gotoxy(tail_x,     tail_y);
     printf("\\");
     t_gotoxy(tail_x + 1, tail_y + 1);
     printf("\\");
@@ -216,46 +246,7 @@ static void t_draw_speech_bubble_cute(int bunny_x, int base_y, const char* msg) 
     t_set_color(old_attr);
 }
 
-// ---------------------------------------------
-//  토끼 + 말풍선 통합 출력
-// ---------------------------------------------
-static void t_draw_bunny(int base_y, int frame) {
-    const char* bunny[] = {
-        " (\\_/)",
-        " ( •_•)",
-        " / >o "
-    };
 
-    int width   = t_get_console_width();
-    int bunny_x = width - 18;   // 화면 오른쪽 근처
-
-    // 이 줄들 전체를 싹 지움 (버니 + 말풍선 영역)
-    t_clear_bunny_area(base_y);
-
-    // 어떤 대사 쓸지 고르기 (프레임에 따라)
-    int msg_index = (frame / 25) % BUNNY_LINES_COUNT; // 숫자 바꾸면 말 바뀌는 속도 조절
-    const char* msg = BUNNY_LINES[msg_index];
-
-    // 1) 말풍선 먼저 그리기
-    t_draw_speech_bubble_cute(bunny_x, base_y, msg);
-
-    // 2) 색 저장
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    WORD old_attr = csbi.wAttributes;
-
-    // 토끼 색 (밝은 분홍 느낌)
-    t_set_color(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-
-    // 3) 토끼 그리기
-    for (int r = 0; r < 3; r++) {
-        t_gotoxy(bunny_x, base_y + r);
-        printf("%s", bunny[r]);
-    }
-
-    // 색 복원
-    t_set_color(old_attr);
-}
 // --------------------------------------------------
 //  화면들
 // --------------------------------------------------
@@ -265,7 +256,6 @@ static int t_show_menu(void) {
     while (1) {
         system("cls");
 
-        // 타이틀 강조 (색만 바꿈)
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
         WORD old_attr = csbi.wAttributes;
@@ -307,13 +297,12 @@ static void t_show_description(void) {
 
     const char* empty[6] = { "", "", "", "", "", "" };
     int top = 6;
-    t_draw_text_box(top, empty, n);   // 틀 먼저
+    t_draw_text_box(top, empty, n);
 
     int width = t_get_console_width();
     int left  = (width - T_BOX_WIDTH) / 2;
     if (left < 0) left = 0;
 
-    // 한 글자씩 출력
     for (int i = 0; i < n; i++) {
         const char* s = lines[i];
         int y = top + 1 + i;
@@ -326,11 +315,11 @@ static void t_show_description(void) {
 
     while (1) {
         int ch = getch();
-        if (ch == 13) break;  // ENTER → 로딩으로
+        if (ch == 13) break;
     }
 }
 
-// 3) 로딩 화면 (길이 고정 "Loading...")
+// 3) 로딩 화면 (깜빡임 최소화)
 static void t_show_loading(void) {
     system("cls");
 
@@ -339,31 +328,34 @@ static void t_show_loading(void) {
     const char* tip_has_item = "아이템 효과로 숫자가 더 오래 표시됩니다! (+200%)";
     const char* tip = hasItem ? tip_has_item : tip_no_item;
 
-    int y_msg = T_SCREEN_HEIGHT / 2;     // Loading... 줄
-    int y_tip = y_msg + 2;               // TIP 줄
+    int width = t_get_console_width();
+    int y_msg = T_SCREEN_HEIGHT / 2;
+    int y_tip = y_msg + 2;
 
-    // 먼저 두 줄 비우고 TIP 가운데 정렬(한글 기준)
     t_clear_line(y_msg);
     t_clear_line(y_tip);
     t_draw_center_text_kor(y_tip, tip);
 
-    // "Loading..." 애니메이션 (길이는 항상 같게 유지)
+    const char* base = "Loading...";
+    int baseLen = (int)strlen(base);
+    int x = (width - baseLen) / 2;
+    if (x < 0) x = 0;
+
     for (int i = 0; i < 24; i++) {
-        char buf[] = "Loading...   ";  // 뒤에 공백 넣어서 길이 고정
-        int dotCount = i % 4;          // 0~3
+        char buf[16] = "Loading...   ";
+        int dotCount = i % 4;
 
         for (int d = 0; d < 3; d++) {
             buf[7 + d] = (d < dotCount) ? '.' : ' ';
         }
 
-        t_clear_line(y_msg);
-        // 여기서도 한글 버전 센터 함수 쓰지만,
-        // buf는 전부 ASCII라 그냥 길이 기준으로 딱 맞게 들어감
-        t_draw_center_text_kor(y_msg, buf);
+        t_gotoxy(x, y_msg);   // ← 더 이상 줄 전체 clear 안 함
+        printf("%s", buf);
 
         Sleep(150);
     }
 }
+
 // --------------------------------------------------
 //  실제 게임
 // --------------------------------------------------
@@ -372,21 +364,19 @@ void timing_game(void) {
     srand((unsigned int)time(NULL));
 
     while (1) {
-        // 메뉴
         int menu = t_show_menu();
-        if (menu == 3) {   // ESC → 미로로
+        if (menu == 3) {
             system("cls");
             maze(1);
             return;
         }
-        if (menu == 2) {   // 설명 보고 → 로딩
+        if (menu == 2) {
             t_show_description();
             t_show_loading();
-        } else {           // 바로 시작
+        } else {
             t_show_loading();
         }
 
-        // ----------------- 게임 진행 -----------------
         double visible_limit = (item[1] != 0) ? 5.4 : 2.7;
 
         system("cls");
@@ -407,6 +397,11 @@ void timing_game(void) {
         double  t;
         int     faded = 0;
         int     frame = 0;
+        draw_bunny_static(14);
+
+        // 말풍선 타이머
+        int bubbleTimer = 0;
+        int bubbleIndex = 0;
 
         while (1) {
             clock_t now = clock();
@@ -415,44 +410,46 @@ void timing_game(void) {
             if (t <= visible_limit) {
                 char buf[64];
                 sprintf(buf, "%.2f초", t);
-                t_clear_line(10);
+
+                // ★ 숫자 라인 전체를 매번 지우지 않고, 그냥 덮어쓰기만 함
                 t_draw_center_text(10, buf);
             } else if (!faded) {
-                t_clear_line(10);
+                t_clear_line(10);  // 숫자 사라지는 시점에 딱 한 번만 지우기
                 t_draw_center_text(10, "멈추고 싶을 때 ENTER를 누르세요!");
                 faded = 1;
             }
 
-            t_draw_bunny(14, frame);
             
-
-            frame++;
+            if (bubbleTimer % 35 == 0) {
+                bubbleIndex = rand() % BUNNY_LINES_COUNT;
+                draw_bubble_only(14, BUNNY_LINES[bubbleIndex]);
+            }
+            bubbleTimer++;
+            
 
             if (_kbhit()) {
                 int c = _getch();
-                if (c == 13) {  // ENTER
+                if (c == 13) {
                     end_time = clock();
                     break;
-                } else if (c == 27) { // ESC → 미로
+                } else if (c == 27) {
                     system("cls");
                     maze(1);
                     return;
                 }
             }
 
-            Sleep(50);
+            Sleep(60);   // 50 → 60ms로 살짝 늘려서 깜빡임 체감도 조금 줄이기
         }
 
         t = (double)(end_time - start_time) / CLOCKS_PER_SEC;
 
-        // STOP 연출
         system("cls");
         t_draw_score_and_line();
         t_draw_center_text(8, "STOP!");
-        t_draw_bunny(14, 0);
+        draw_bunny_static(14);
         Sleep(900);
 
-        // ----------------- 결과 화면 -----------------
         system("cls");
         t_draw_score_and_line();
 
