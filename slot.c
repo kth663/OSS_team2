@@ -97,7 +97,7 @@ void runSlotMachine(void) {
     srand((unsigned int)time(NULL));
 
     printf("╔════════════════════════════════════════╗\n");
-    printf("║            🎰 SLOT MACHINE 🎰          ║\n");
+    printf("║               SLOT MACHINE             ║\n");
     printf("╠════════════════════════════════════════╣\n");
     printf("║   시작 점수 : %-6d 코인                   ║\n", score);
     printf("║   행운의 부적 : %-3d 개                      ║\n", getLuckyCharmCount());
@@ -147,5 +147,5 @@ void runSlotMachine(void) {
 
     printf("\n게임 종료! 남은 코인: %d\n", score);
    
-    maze(1);
+    return;
 }
