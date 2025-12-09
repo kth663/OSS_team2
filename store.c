@@ -6,7 +6,7 @@
 #include "maze.h"
 
 #define CLUE_PRICE 2000 
-#define ITEM_PRICE 200 
+#define ITEM_PRICE 1000
 
 void gotoxy_store(int x, int y) {
     COORD pos = { x, y };
@@ -100,7 +100,7 @@ int store() {
         else printf("%d. 비밀번호 %d단서", i+1, i+1);
     }
 
-    gotoxy_store(26, 13); printf(" [ 아이템 : 200 G ] ");
+    gotoxy_store(26, 13); printf(" [ 아이템 : 1000 G ] ");
     char* itemNames[5] = {"뱀게임 부적", "타이밍 시계", "퀴즈 힌트북", "슬롯 행운권", "미로 나침반"};
     for(int i=0; i<5; i++) {
         gotoxy_store(28, 14+i);
