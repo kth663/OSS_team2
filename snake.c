@@ -271,19 +271,37 @@ void snakeGame(){
             clearScore= 2000;
         }
     }
+    
     //시간에 따라서 스코어 부여
     int timeScore = endTime - startTime;
+    if(item[0] == 1){
+        clearScore *= 2;
+        timeScore *= 2;
+    }
     //이번 게임에서 얻은 총 스코어
     int totalScore = clearScore + timeScore;
     
+
+    if(isClear == 1){
+        printf("  ____    _    __  __ _____    ____ _     _____    _    ____\n");
+        printf(" / ___|  / \\  |  \\/  | ____|  / ___| |   | ____|  / \\  |  _ \\\n");
+        printf("| |  _  / _ \\ | |\\/| |  _|   | |   | |   |  _|   / _ \\ | |_) |\n");
+        printf("| |_| |/ ___ \\| |  | | |___  | |___| |___| |___ / ___ \\|  _ <\n");
+        printf(" \\____/_/   \\_\\_|  |_|_____|  \\____|_____|_____/_/   \\_\\_| \\_\\\n");
+    }
+    else{
+        printf("  ____    _    __  __ _____    _____     _______ ____\n");
+        printf(" / ___|  / \\  |  \\/  | ____|  / _ \\ \\   / / ____|  _ \\\n");
+        printf("| |  _  / _ \\ | |\\/| |  _|   | | | \\ \\ / /|  _| | |_) |\n");
+        printf("| |_| |/ ___ \\| |  | | |___  | |_| |\\ V / | |___|  _ <\n");
+        printf(" \\____/_/   \\_\\_|  |_|_____|  \\___/  \\_/  |_____|_| \\_\\\n");
+    }
     //스코어 출력
     printf("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n");
     if(isClear == 1){
-        printf("┃Game Clear!                      ┃\n");
+        //printf("┃Game Clear!                      ┃\n");
         if(item[0] == 1){
             printf("┃스코어 2배 아이템 소지중!!!      ┃\n");
-            clearScore *= 2;
-            timeScore *= 2;
         }
         printf("┃Clear Score : %-4d               ┃\n",clearScore);
         printf("┃Time Score : %-3d                 ┃\n",timeScore);
@@ -291,10 +309,9 @@ void snakeGame(){
 
     }
     else{
-        printf("┃Game Over                        ┃\n");
+        //printf("┃Game Over                        ┃\n");
         if(item[0] == 1){
             printf("┃스코어 2배 아이템 소지중!!!      ┃\n");
-            timeScore *= 2;
         }
         printf("┃GetScore : %-3d                   ┃\n",totalScore);
 
