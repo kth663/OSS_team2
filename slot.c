@@ -102,7 +102,14 @@ void runSlotMachine(void) {
     printf("║   시작 점수 : %-6d 코인                   ║\n", score);
     printf("║   행운의 부적 : %-3d 개                      ║\n", getLuckyCharmCount());
     printf("╚════════════════════════════════════════╝\n\n");
-
+    
+    
+    if (score <= 0) {
+    printf("스코어 없음! 슬롯머신을 이용할 수 없습니다.\n");
+    return;
+    }
+    
+    
     while (score > 0) {
         printf("베팅 금액을 입력하세요 (0 입력 시 종료): ");
         if (scanf_s("%d", &bet) != 1) {
@@ -117,6 +124,8 @@ void runSlotMachine(void) {
 
         score -= bet;
         printf("\n슬롯을 돌리는 중....\n");
+    
+
 
         int useCharm = 0;
         if (getLuckyCharmCount() > 0) {
