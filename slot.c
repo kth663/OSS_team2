@@ -116,7 +116,7 @@ void runSlotMachine(void) {
         }
 
         score -= bet;
-        printf("\n슬롯을 돌립니다...\n");
+        printf("\n슬롯을 돌리는 중....\n");
 
         int useCharm = 0;
         if (getLuckyCharmCount() > 0) {
