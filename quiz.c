@@ -79,27 +79,6 @@ void drawBox() {
     printf("┤");
 }
 
-void drawResultSymbol(int isCorrect, int x, int y) {
-    if (isCorrect) {
-        setColor(COLOR_GREEN);
-        _gotoxy(x, y);     printf("   $$$$$$\\   ");
-        _gotoxy(x, y + 1); printf("  $$  __$$\\  ");
-        _gotoxy(x, y + 2); printf("  $$ /  $$ | ");
-        _gotoxy(x, y + 3); printf("  $$ |  $$ | ");
-        _gotoxy(x, y + 4); printf("  \\$$$$$$  | ");
-        _gotoxy(x, y + 5); printf("   \\______/  ");
-    } else {
-        setColor(COLOR_RED);
-        _gotoxy(x, y);     printf("  $$\\   $$\\  ");
-        _gotoxy(x, y + 1); printf("  $$ |  $$ | ");
-        _gotoxy(x, y + 2); printf("  \\$$\\ $$  | ");
-        _gotoxy(x, y + 3); printf("   \\$$$$  /  ");
-        _gotoxy(x, y + 4); printf("   $$  $$<   ");
-        _gotoxy(x, y + 5); printf("  $$  /\\$$\\  ");
-    }
-    setColor(COLOR_DEFAULT);
-}
-
 void quiz() {
     FILE *qF, *aF, *iF, *nF;
     
@@ -201,7 +180,6 @@ void quiz() {
 
     if (strcmp(userAnswer, answers[idx]) == 0) {
         Beep(523, 100); Beep(659, 100); Beep(784, 200);
-        drawResultSymbol(1, UI_X + 40, UI_Y + 5);
         
         _gotoxy(UI_X + 4, UI_Y + 16);
         setColor(COLOR_GREEN);
@@ -209,7 +187,6 @@ void quiz() {
         score += 1000;
     } else {
         Beep(200, 300); 
-        drawResultSymbol(0, UI_X + 40, UI_Y + 5); 
 
         _gotoxy(UI_X + 4, UI_Y + 16);
         setColor(COLOR_RED);
