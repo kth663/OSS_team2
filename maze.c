@@ -225,6 +225,9 @@ void maze(int do_Animation){
         char input = _getch();
         int nx = x;
         int ny = y;
+        if(input == '='){ // 치트키 스코어 추가하기 위한 치트키
+            score += 1000;
+        }
         if(input == 13){
             if(map[y][x] == 'E'){
                 closeMaze();
