@@ -17,6 +17,8 @@
 #define COLOR_RED 12
 #define COLOR_YELLOW 14
 #define COLOR_WHITE 15
+#define COLOR_GRAY 8    
+#define COLOR_BRIGHT_WHITE 15
 
 #define UI_X 4          
 #define UI_Y 3          
@@ -40,7 +42,8 @@ void _gotoxy(int x, int y) {
 
 void typeWriter(const char* str) {
     for (int i = 0; i < strlen(str); i++) {
-        printf("%c", str[i]); 
+        printf("%c", str[i]);
+        fflush(stdout); 
         Sleep(25);            
     }
 }
@@ -76,6 +79,27 @@ void drawBox() {
     printf("┤");
 }
 
+void drawResultSymbol(int isCorrect, int x, int y) {
+    if (isCorrect) {
+        setColor(COLOR_GREEN);
+        _gotoxy(x, y);     printf("   $$$$$$\\   ");
+        _gotoxy(x, y + 1); printf("  $$  __$$\\  ");
+        _gotoxy(x, y + 2); printf("  $$ /  $$ | ");
+        _gotoxy(x, y + 3); printf("  $$ |  $$ | ");
+        _gotoxy(x, y + 4); printf("  \\$$$$$$  | ");
+        _gotoxy(x, y + 5); printf("   \\______/  ");
+    } else {
+        setColor(COLOR_RED);
+        _gotoxy(x, y);     printf("  $$\\   $$\\  ");
+        _gotoxy(x, y + 1); printf("  $$ |  $$ | ");
+        _gotoxy(x, y + 2); printf("  \\$$\\ $$  | ");
+        _gotoxy(x, y + 3); printf("   \\$$$$  /  ");
+        _gotoxy(x, y + 4); printf("   $$  $$<   ");
+        _gotoxy(x, y + 5); printf("  $$  /\\$$\\  ");
+    }
+    setColor(COLOR_DEFAULT);
+}
+
 void quiz() {
     FILE *qF, *aF, *iF, *nF;
     
@@ -86,12 +110,6 @@ void quiz() {
         nF = fopen("num_char.txt", "r");
 
         if (!qF || !aF || !iF || !nF) {
-            setColor(COLOR_RED);
-            printf("\n [ERROR] 데이터 파일 누락.\n");
-            setColor(COLOR_DEFAULT);
-            if(qF) fclose(qF); if(aF) fclose(aF); 
-            if(iF) fclose(iF); if(nF) fclose(nF);
-            while(getchar() != '\n'); getchar();
             return;
         }
 
@@ -118,23 +136,28 @@ void quiz() {
     
     drawBox();
 
-    _gotoxy(UI_X + 22, UI_Y + 1);
-    setColor(COLOR_CYAN);
-    printf("넌센스  퀴즈");
-    setColor(COLOR_WHITE);
+    _gotoxy(UI_X + 2, UI_Y + 1);
+    setColor(BACKGROUND_BLUE | COLOR_WHITE);
+    printf("  NON-SENSE QUIZ STAGE  "); 
+    setColor(COLOR_DEFAULT);
 
+    _gotoxy(UI_X + 40, UI_Y + 1);
+    setColor(COLOR_YELLOW);
+    printf("Score: %d", score);
+
+    setColor(COLOR_WHITE);
     _gotoxy(UI_X + 4, UI_Y + 4);
     printf("Q.");
-    _gotoxy(UI_X + 4, UI_Y + 5);
-    typeWriter(questions[idx]); 
 
     _gotoxy(UI_X + 4, UI_Y + 8);
     if (item[2] >= 1) { 
         setColor(COLOR_YELLOW);
-        printf("   초성 힌트    : [ %s ]", initials[idx]);
+        printf(" ★ 힌트 아이템 사용됨! ★");
+        _gotoxy(UI_X + 4, UI_Y + 9);
+        printf(" >> 초성 : [ %s ]", initials[idx]);
     } else {
-        setColor(COLOR_DEFAULT); 
-        printf("(초성 아이템이 없습니다)");
+        setColor(COLOR_GRAY); 
+        printf(" (초성 아이템 미사용)");
     }
 
     setColor(COLOR_WHITE);
@@ -142,18 +165,26 @@ void quiz() {
     printf("   글자 수 : ");
     
     setColor(COLOR_CYAN);
-    for(int i=0; i<answerLen; i++) printf("□ ");
+    for(int i=0; i<answerLen; i++) printf("▣ ");
 
     setColor(COLOR_WHITE);
     _gotoxy(UI_X + 4, UI_Y + 13);
     printf("   정답 입력 : ");
-    
+
+    fflush(stdout); 
+
+    _gotoxy(UI_X + 4, UI_Y + 5);
+    setColor(COLOR_BRIGHT_WHITE); 
+    typeWriter(questions[idx]); 
+
     int inputX = UI_X + 19;
     int inputY = UI_Y + 13;
-
     char userAnswer[MAX_STRLEN];
+
     _gotoxy(inputX, inputY);
-   
+    printf("▶"); 
+    _gotoxy(inputX + 2, inputY);
+
     while (_kbhit()) _getch();
     fflush(stdin);
    
@@ -162,24 +193,32 @@ void quiz() {
          removeNewline(userAnswer);
     }
 
+    Sleep(300);
+
     setColor(COLOR_WHITE);
     _gotoxy(UI_X + 2, UI_Y + 15);
     for(int i=0; i<UI_WIDTH-4; i++) printf("─"); 
-   
-    _gotoxy(UI_X + 4, UI_Y + 16);
 
     if (strcmp(userAnswer, answers[idx]) == 0) {
+        Beep(523, 100); Beep(659, 100); Beep(784, 200);
+        drawResultSymbol(1, UI_X + 40, UI_Y + 5);
+        
+        _gotoxy(UI_X + 4, UI_Y + 16);
         setColor(COLOR_GREEN);
-        printf("   정답입니다!! (+1000점)        ");
+        printf("   ★ 정답입니다!! (+1000점) ★");
         score += 1000;
     } else {
+        Beep(200, 300); 
+        drawResultSymbol(0, UI_X + 40, UI_Y + 5); 
+
+        _gotoxy(UI_X + 4, UI_Y + 16);
         setColor(COLOR_RED);
-        printf("   땡! 정답은 [ %s ] 입니다.   ", answers[idx]);
+        printf("   땡! 정답은 [ %s ] 입니다...", answers[idx]);
     }
 
     setColor(COLOR_DEFAULT);
-    _gotoxy(UI_X, UI_Y + UI_HEIGHT + 1);
-    printf("   계속하려면 아무 키나 누르세요...");
+    _gotoxy(UI_X + 15, UI_Y + UI_HEIGHT - 2);
+    printf(">> 아무 키나 누르면 돌아갑니다 <<");
     _getch();
 
     maze(1); 
