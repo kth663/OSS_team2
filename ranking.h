@@ -9,7 +9,7 @@
 typedef struct {
     char initials[4];   
     char padding[4];    
-    int score;         
+    int time;         
 } RankEntry;
 
 

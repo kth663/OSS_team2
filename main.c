@@ -11,7 +11,7 @@ int getPassword[5] = {0,0,0,0,0};
 int item[5] = {0,0,0,0,0}; // 0: 뱀게임, 1: 타이밍, 2: 퀴즈, 3: 슬룻머신, 4: 미로
 char password[100];
 int startTime = 0;
-
+int endTime = 0;
 
 int main(void){
     SetConsoleOutputCP(CP_UTF8);
