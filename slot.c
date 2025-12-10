@@ -99,8 +99,8 @@ void runSlotMachine(void) {
     printf("╔════════════════════════════════════════╗\n");
     printf("║               SLOT MACHINE             ║\n");
     printf("╠════════════════════════════════════════╣\n");
-    printf("║   시작 점수 : %-6d 코인                   ║\n", score);
-    printf("║   행운의 부적 : %-3d 개                      ║\n", getLuckyCharmCount());
+    printf("║   시작 점수 : %-6d 코인                  ║\n", score);
+    printf("║   행운의 부적 : %-3d 개                  ║\n", getLuckyCharmCount());
     printf("╚════════════════════════════════════════╝\n\n");
     
     
