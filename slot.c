@@ -3,160 +3,183 @@
 #include <stdlib.h>
 #include <time.h>
 #include <windows.h>
-#include "maze.h"
-#include "luckcharm.h"
+#include <string.h>
+#include <conio.h>
 #include "data.h"
+#include "luckcharm.h"
+#include "maze.h"
 
-// 색상 출력 함수
-void printColored(const char* text, int color) {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, color);
-    printf("%-6s", text);
-    SetConsoleTextAttribute(hConsole, 7); // 기본색으로 복원
+// ------------------- 전역 변수 -------------------
+int score = 100;
+
+// ------------------- 콘솔 유틸 -------------------
+void moveCursor(int x, int y) {
+    COORD pos = { (SHORT)x, (SHORT)y };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-// 슬롯 애니메이션
-void spinAnimation(int* s1, int* s2, int* s3, int useCharm) {
-    const char* allSymbols[] = { "CHERRY", "LEMON", "BAR", "7", "BELL" };
-    int colors[] = { 12, 14, 8, 10, 11 }; // 빨강, 노랑, 회색, 초록, 파랑
+void clearLine(int y) {
+    moveCursor(0, y);
+    printf("                                        ");
+}
+
+int getConsoleWidth() {
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    return csbi.srWindow.Right - csbi.srWindow.Left + 1;
+}
+
+int centerX(const char* text) {
+    int width = getConsoleWidth();
+    int len = (int)strlen(text);
+    int x = (width - len) / 2;
+    if (x < 0) x = 0;
+    return x;
+}
+
+// ------------------- 슬롯머신 헤더 출력 -------------------
+void printSlotHeader(int topY) {
+    int boxWidth = 42;
+    int x;
+
+    x = centerX("╔════════════════════════════════════════╗");
+    moveCursor(x, topY);     printf("╔════════════════════════════════════════╗");
+    x = centerX("║               SLOT MACHINE             ║");
+    moveCursor(x, topY + 1); printf("║               SLOT MACHINE             ║");
+    x = centerX("╠════════════════════════════════════════╣");
+    moveCursor(x, topY + 2); printf("╠════════════════════════════════════════╣");
+
+    char buf[50];
+
+    sprintf(buf, "시작 점수 : %d 코인", score);
+    int padLeft = (boxWidth - 2 - (int)strlen(buf)) / 2;
+    int padRight = boxWidth - 2 - (int)strlen(buf) - padLeft;
+    x = centerX("║                                        ║");
+    moveCursor(x, topY + 3);
+    printf("║%*s%s%*s║", padLeft, "", buf, padRight, "");
+
+    sprintf(buf, "행운의 부적 : %d 개", getLuckyCharmCount());
+    padLeft = (boxWidth - 2 - (int)strlen(buf)) / 2;
+    padRight = boxWidth - 2 - (int)strlen(buf) - padLeft;
+    x = centerX("║                                        ║");
+    moveCursor(x, topY + 4);
+    printf("║%*s%s%*s║", padLeft, "", buf, padRight, "");
+
+    x = centerX("╚════════════════════════════════════════╝");
+    moveCursor(x, topY + 5);
+    printf("╚════════════════════════════════════════╝");
+}
+
+// ------------------- 슬롯머신 심볼 애니메이션 -------------------
+void spinAnimation(int* s1, int* s2, int* s3, int useCharm, int topY) {
+    const char* allSymbols[] = { "CHERRY","LEMON","BAR","7","BELL" };
     const char* symbols[5];
     int symbolCount = 5;
 
-    // 부적 사용 시 심볼 하나 제거
     if (useCharm) {
         int removeIndex = rand() % 5;
         int j = 0;
-        for (int i = 0; i < 5; i++) {
-            if (i != removeIndex) symbols[j++] = allSymbols[i];
-        }
+        for (int i = 0; i < 5; i++)
+            if (i != removeIndex)
+                symbols[j++] = allSymbols[i];
         symbolCount = 4;
     } else {
-        for (int i = 0; i < 5; i++) symbols[i] = allSymbols[i];
+        for (int i = 0; i < 5; i++)
+            symbols[i] = allSymbols[i];
     }
 
-    int temp1, temp2, temp3;
+    int temp1 = 0, temp2 = 0, temp3 = 0;
 
-    // 슬롯 박스 고정 출력
-    printf("┌────────┬────────┬────────┐\n");
-    printf("│        │        │        │\n");
-    printf("└────────┴────────┴────────┘\n");
+    int x = centerX("┌────────┬────────┬────────┐");
+    moveCursor(x, topY);     printf("┌────────┬────────┬────────┐");
+    moveCursor(x, topY + 1); printf("│        │        │        │");
+    moveCursor(x, topY + 2); printf("└────────┴────────┴────────┘");
 
     for (int i = 0; i < 15; i++) {
         temp1 = rand() % symbolCount;
         temp2 = rand() % symbolCount;
         temp3 = rand() % symbolCount;
 
-        // 심볼만 갱신 (박스 고정)
-        COORD pos = { 2, 1 }; // 좌표: x=2, y=1 첫 심볼 위치
-        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
-        SetConsoleCursorPosition(hConsole, pos);
-        printColored(symbols[temp1], colors[temp1]);
-
-        pos.X = 11; // 두 번째 슬롯
-        SetConsoleCursorPosition(hConsole, pos);
-        printColored(symbols[temp2], colors[temp2]);
-
-        pos.X = 20; // 세 번째 슬롯
-        SetConsoleCursorPosition(hConsole, pos);
-        printColored(symbols[temp3], colors[temp3]);
+        moveCursor(x + 2, topY + 1);  printf("%-6s", symbols[temp1]);
+        moveCursor(x + 11, topY + 1); printf("%-6s", symbols[temp2]);
+        moveCursor(x + 20, topY + 1); printf("%-6s", symbols[temp3]);
 
         fflush(stdout);
-        Sleep(80 + i * 20); // 점점 느려지면서 정지
+        Sleep(80 + i * 20);
     }
 
     *s1 = temp1;
     *s2 = temp2;
     *s3 = temp3;
 
-    // 최종 심볼 출력 (박스 그대로)
-    COORD pos = { 2, 1 };
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleCursorPosition(hConsole, pos);
-    printColored(symbols[*s1], colors[*s1]);
-
-    pos.X = 11;
-    SetConsoleCursorPosition(hConsole, pos);
-    printColored(symbols[*s2], colors[*s2]);
-
-    pos.X = 20;
-    SetConsoleCursorPosition(hConsole, pos);
-    printColored(symbols[*s3], colors[*s3]);
-
-    printf("\n");
+    moveCursor(x + 2, topY + 1);  printf("%-6s", symbols[*s1]);
+    moveCursor(x + 11, topY + 1); printf("%-6s", symbols[*s2]);
+    moveCursor(x + 20, topY + 1); printf("%-6s", symbols[*s3]);
 }
 
-// 슬롯머신 게임 루프
-void runSlotMachine(void) {
+// ------------------- 슬롯머신 실행 함수 -------------------
+void runSlotMachine() {
     system("cls");
-    printf("\n");
-
-    int bet;
-    int s1, s2, s3;
-
     srand((unsigned int)time(NULL));
 
-    printf("╔════════════════════════════════════════╗\n");
-    printf("║               SLOT MACHINE             ║\n");
-    printf("╠════════════════════════════════════════╣\n");
-    printf("║   시작 점수 : %-6d 코인                  ║\n", score);
-    printf("║   행운의 부적 : %-3d 개                  ║\n", getLuckyCharmCount());
-    printf("╚════════════════════════════════════════╝\n\n");
-    
-    
-    // if (score <= 0) {
-    // printf("스코어 없음! 슬롯머신을 이용할 수 없습니다.\n");
-    // return;
-    // }
-    
-    
+    int bet, s1, s2, s3;
+    char input[20];
+    int topY = 3;
+
+    printSlotHeader(topY);
+
     while (1) {
-        printf("베팅 금액을 입력하세요 (0 입력 시 종료): ");
-        if (scanf_s("%d", &bet) != 1) {
-            while (getchar() != '\n');
-            continue;
-        }
-        if (bet == 0) break;
+        moveCursor(0, topY + 7); printf("                                      ");
+        moveCursor(0, topY + 7); printf("베팅 금액 입력 (0 입력 시 종료): ");
+        if (fgets(input, sizeof(input), stdin) == NULL) continue;
+        if (sscanf(input, "%d", &bet) != 1) continue;
+        if (bet == 0) return;
         if (bet > score) {
-            printf(">> 점수가 부족합니다!\n\n");
+            moveCursor(0, topY + 8);
+            printf(">> 점수가 부족합니다!");
             continue;
         }
-
-        score -= bet;
-        printf("\n슬롯을 돌리는 중....\n");
-    
-
-
-        int useCharm = 0;
-        if (getLuckyCharmCount() > 0) {
-            printf("행운의 부적을 사용하시겠습니까? (%d개 남음, 1: 사용, 0: 사용 안 함): ", getLuckyCharmCount());
-            if (scanf_s("%d", &useCharm) != 1) useCharm = 0;
-        }
-
-        if (useCharm && !useLuckyCharm()) useCharm = 0;
-
-        spinAnimation(&s1, &s2, &s3, useCharm);
-
-        if (s1 == s2 && s2 == s3) {
-            printf("\n🎉🎉🎉 JACKPOT!! 🎉🎉🎉\n");
-            score += bet * 5;
-        }
-        else if (s1 == s2 || s2 == s3 || s1 == s3) {
-            printf("\n✨ 두 개 일치 성공! ✨\n");
-            score += bet * 2;
-        }
-        else {
-            printf("\n😢 꽝! 다음 기회에...\n");
-        }
-
-        printf("현재 점수: %d 코인\n", score);
-        printf("남은 행운의 부적: %d\n\n", getLuckyCharmCount());
-        Sleep(1500);
+        break;
     }
 
-    printf("\n게임 종료! 남은 코인: %d\n", score);
-   
-    //return;
+    score -= bet;
 
+    int useCharm = 0;
+    if (getLuckyCharmCount() > 0) {
+        while (1) {
+            moveCursor(0, topY + 8); printf("                                      ");
+            moveCursor(0, topY + 8);
+            printf("행운의 부적 사용? (%d개 남음, 1:사용 0:사용 안함): ",
+                   getLuckyCharmCount());
+            if (fgets(input, sizeof(input), stdin) == NULL) continue;
+            if (sscanf(input, "%d", &useCharm) != 1) continue;
+            if (useCharm != 0 && useCharm != 1) continue;
+            break;
+        }
+    }
+
+    if (useCharm && !useLuckyCharm()) useCharm = 0;
+
+    spinAnimation(&s1, &s2, &s3, useCharm, topY + 10);
+
+    moveCursor(0, topY + 14); printf("                                      ");
+    if (s1 == s2 && s2 == s3) {
+        printf("JACKPOT! 점수 %d 증가", bet * 5);
+        score += bet * 5;
+    }
+    else if (s1 == s2 || s2 == s3 || s1 == s3) {
+        printf("두 개 일치! 점수 %d 증가", bet * 2);
+        score += bet * 2;
+    }
+    else {
+        printf("꽝! 점수 변화 없음");
+    }
+
+    moveCursor(0, topY + 15);
+    printf("현재 점수: %d 코인 | 남은 부적: %d", score, getLuckyCharmCount());
+
+    moveCursor(0, topY + 17);
+    printf("\n아무 키나 누르면 종료합니다...");
+    _getch();
     maze(1);
 }
