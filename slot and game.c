@@ -16,7 +16,9 @@ void openInventory(void) {
     printf("===== 인벤토리 =====\n");
     printf("점수: %d\n", score);
     printf("행운의 부적: %d 개\n", getLuckyCharmCount);
-
+    printf("퀴즈북: %d 개\n",item[1]);
+    printf("뱀게임 부적: %d개\n",item[2]);
+    printf("초시계: %d개\n",item[3]);
     printf("\n===== 비밀번호 단서 =====\n");
 
     // password = 실제 정답 (예: abcde)
