@@ -5,6 +5,10 @@
 #include "maze.h"
 #include "data.h"
 #include "ranking.h"
+#include <string.h> 
+#include <stdlib.h> 
+#include <stdbool.h> 
+#include <errno.h> 
 
 void set_utf8_encoding2() {
     if (SetConsoleOutputCP(65001) == 0) {
@@ -51,9 +55,25 @@ void clearInputBuffer() {
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-void displayWelcomeMessage() {
-    printf("==========================================\n");
-    printf("    탈출하려면 최종 비밀번호를 입력하세요!    \n");
+void displayGameStatus() {
+    
+    long currentTime = time(NULL);
+    long timeElapsed = currentTime - startTime;
+
+    if (timeElapsed < 0) {
+        timeElapsed = 0; 
+    }
+
+    int minutes = timeElapsed / 60;
+    int seconds = timeElapsed % 60;
+
+    printf("==================================================\n");
+    printf(" SCORE: %d Pts  | PLAYTIME: %02d:%02d\n", score, minutes, seconds);
+    printf("--------------------------------------------------\n");
+}
+
+void displayWelcomeMessage(){
+    printf("  탈출하려면 최종 비밀번호를 입력하세요! \n");
     printf("==========================================\n");
     printf("  (비밀번호는 영문 소문자 a-z로 구성됩니다.) \n");
     printf("------------------------------------------\n");
@@ -67,6 +87,7 @@ void displayExitMessage() {
 
 int runGame() {
     system("cls");
+    displayGameStatus();
     displayWelcomeMessage();
     char userGuess[MAX_INPUT_LENGTH];
     int scanResult;
@@ -112,4 +133,4 @@ int executeGame() {
     savePasswordToFile();
     printf("C");
     return 0;
-}
+};
