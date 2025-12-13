@@ -170,9 +170,12 @@ int executeRankingManager() {
     RankEntry allRanks[MAX_RECORDS]; 
     int recordCount;             
     RankEntry newRecord;           
+    
 
     recordCount = loadRanks(allRanks);
     printf(" 기존 랭킹 기록 %d개를 불러왔습니다.\n", recordCount);
+
+    printRanks(allRanks, recordCount);
 
     int playTime = endTime - startTime;
     newRecord.time = playTime;
@@ -180,6 +183,8 @@ int executeRankingManager() {
         printf("기록 입력 중 오류 발생. 프로그램이 종료됩니다.\n");
         return 1;
     }
+
+    system("cls");
 
     if (recordCount < MAX_RECORDS) {
         allRanks[recordCount] = newRecord;
