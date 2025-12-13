@@ -2,6 +2,7 @@
 #include <windows.h> 
 #include <time.h>
 #include "data.h"
+#include "conio.h"
 
 void set_utf8_encoding() {
     if (SetConsoleOutputCP(65001) == 0) {
@@ -24,7 +25,7 @@ int compareRanks(const void *a, const void *b) {
     RankEntry *rankA = (RankEntry *)a;
     RankEntry *rankB = (RankEntry *)b;
 
-    return rankB->time - rankA->time; 
+    return rankA->time - rankB->time; 
 }
 
 int getUserInput(RankEntry *newEntry) {
@@ -140,9 +141,21 @@ void printRanks(const RankEntry ranks[], int count) {
 
 void displayExitRankingMessage(const char *filename) {
     printf("\n** 랭킹 정보가 %s 파일에 저장되었습니다. **\n", filename);
+    printf("\n[다시 시작하려면 에스(S) 키를 누르세요...]\n");
     printf("\n[창을 닫으려면 엔터(Enter) 키를 누르세요...]\n");
-    _clearInputBuffer(); 
-    getchar();
+    //_clearInputBuffer();
+    while(1){
+        char c = _getch();
+        if(c == 's'){
+            startGame();
+            return;
+        }
+        else if(c == 13){
+            return;
+        }
+        printf("Enter와 S중 선택해주세요\n");
+    } 
+    
 }
 
 

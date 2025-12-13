@@ -10,6 +10,8 @@
 #include <stdbool.h> 
 #include <errno.h> 
 
+long currentTime;
+
 void set_utf8_encoding2() {
     if (SetConsoleOutputCP(65001) == 0) {
         fprintf(stderr, "SetConsoleOutputCP failed. Error: %lu\n", GetLastError());
@@ -57,7 +59,7 @@ void clearInputBuffer() {
 
 void displayGameStatus() {
     
-    long currentTime = time(NULL);
+    currentTime = time(NULL);
     long timeElapsed = currentTime - startTime;
 
     if (timeElapsed < 0) {
@@ -82,7 +84,7 @@ void displayWelcomeMessage(){
 void displayExitMessage() {
     printf("\n[창을 닫으려면 엔터(Enter) 키를 누르세요...]\n");
     clearInputBuffer();
-    getchar();
+    //getchar();
 }
 
 int runGame() {
@@ -93,7 +95,7 @@ int runGame() {
     int scanResult;
 
     while (true) {
-        printf("\n   %d글자 비밀번호를 입력하세요: ", PASSWORD_LENGTH);
+        printf("\n   %d글자 비밀번호를 입력하세요(0입력시 돌아가기): ", PASSWORD_LENGTH);
         
         scanResult = scanf_s("%s", userGuess, MAX_INPUT_LENGTH); 
         
@@ -106,15 +108,21 @@ int runGame() {
 
         size_t len = strlen(userGuess);
 
+        if(strcmp(userGuess,"0") == 0){
+            maze(1);
+            return 0;
+        }
         if (len != PASSWORD_LENGTH) {
             printf(" 입력은 반드시 %d글자여야 합니다. 다시 입력해주세요.\n", PASSWORD_LENGTH);
             continue;
         }
 
         if (strcmp(password, userGuess) == 0) {
-            printf("\n  정답입니다! 탈출 성공! 🎉\n");
+            printf("\n  정답입니다! 탈출 성공!\n");
+            endTime = currentTime;
             break;
-        } else {
+        } 
+        else {
             printf("\n  틀렸습니다. 다시 시도해보세요.\n"); 
         }
     }

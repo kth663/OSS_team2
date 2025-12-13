@@ -1,6 +1,8 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+void startGame();
+
 extern int score;
 extern char password[100]; //비밀번호 저장 변수
 extern int x;

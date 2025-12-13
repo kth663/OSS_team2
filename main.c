@@ -14,14 +14,27 @@ int startTime = 0;
 int endTime = 0;
 
 int main(void){
+    
+    startGame();
+
+    return 0;
+}
+
+void startGame(){
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);  
 
+    //전역변수 초기화
+    score = 0;
+    x = 0;
+    y = 0;
+    for(int i = 0;i<5;i++){
+        getPassword[i] = 0;
+        item[i] = 0;
+    }
     startTime = time(0);
 
     executeGame();
 
     start_screen();
-
-    return 0;
 }
