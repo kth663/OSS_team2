@@ -31,7 +31,7 @@ void snakeGame(){
     //명령어 실행후 메시지가 나오지 않게 함
     system("chcp 65001 > nul");
 
-    item[0] = 1;//테스트 용 임시 아이템 활성화
+    //item[0] = 1;//테스트 용 임시 아이템 활성화
 
     system("cls");
 
@@ -61,6 +61,7 @@ void snakeGame(){
 
     printf("└──────────────────────────────────────────────────┘");
 
+    setCursorPos(2,7);
     
     int level = 1;
     int mapSize = 5;
