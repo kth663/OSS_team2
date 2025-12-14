@@ -60,7 +60,7 @@ void printSlotHeader(int topY) {
     printf("║                                        ║");
     //sprintf(buf, "행운의 부적 : %d 개", getLuckyCharmCount());
     moveCursor(12,topY+4);
-    printf("행운의 부적 : %d 개", getLuckyCharmCount());
+    printf("행운의 부적 : %d 개", item[3]);
     padLeft = (boxWidth - 2 - (int)strlen(buf)) / 2;
     padRight = boxWidth - 2 - (int)strlen(buf) - padLeft;
     //moveCursor(x, topY + 4);
@@ -150,12 +150,11 @@ void runSlotMachine() {
     score -= bet;
 
     int useCharm = 0;
-    if (getLuckyCharmCount() > 0) {
+    if (item[3] > 0) {
         while (1) {
             moveCursor(0, topY + 8); printf("                                      ");
             moveCursor(0, topY + 8);
-            printf("행운의 부적 사용? (%d개 남음, 1:사용 0:사용 안함): ",
-                   getLuckyCharmCount());
+            printf("행운의 부적 사용? (%d개 남음, 1:사용 0:사용 안함): ", item[3]);
             if (fgets(input, sizeof(input), stdin) == NULL) continue;
             if (sscanf(input, "%d", &useCharm) != 1) continue;
             if (useCharm != 0 && useCharm != 1) continue;
@@ -163,7 +162,9 @@ void runSlotMachine() {
         }
     }
 
-    if (useCharm && !useLuckyCharm()) useCharm = 0;
+    if(useCharm){
+        item[3]--;
+    }
 
     spinAnimation(&s1, &s2, &s3, useCharm, topY + 10);
 
@@ -181,7 +182,7 @@ void runSlotMachine() {
     }
 
     moveCursor(0, topY + 15);
-    printf("현재 점수: %d 코인 | 남은 부적: %d", score, getLuckyCharmCount());
+    printf("현재 점수: %d 코인 | 남은 부적: %d", score, item[3]);
 
     moveCursor(0, topY + 17);
     printf("\n아무 키나 누르면 종료합니다...");
