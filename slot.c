@@ -135,7 +135,10 @@ void runSlotMachine() {
         moveCursor(0, topY + 7); printf("베팅 금액 입력 (0 입력 시 종료): ");
         if (fgets(input, sizeof(input), stdin) == NULL) continue;
         if (sscanf(input, "%d", &bet) != 1) continue;
-        if (bet == 0) return;
+        if (bet == 0) {
+            maze(1);
+            return;
+        };
         if (bet > score) {
             moveCursor(0, topY + 8);
             printf(">> 점수가 부족합니다!");
