@@ -41,32 +41,33 @@ int centerX(const char* text) {
 void printSlotHeader(int topY) {
     int boxWidth = 42;
     int x;
-
-    x = centerX("╔════════════════════════════════════════╗");
-    moveCursor(x, topY);     printf("╔════════════════════════════════════════╗");
-    x = centerX("║               SLOT MACHINE             ║");
-    moveCursor(x, topY + 1); printf("║               SLOT MACHINE             ║");
-    x = centerX("╠════════════════════════════════════════╣");
-    moveCursor(x, topY + 2); printf("╠════════════════════════════════════════╣");
+    moveCursor(0, topY);     
+    //printf("╔════════════════════════════════════════╗");
+    printf("╔════════════════════════════════════════╗\n");
+    printf("║               SLOT MACHINE             ║\n");
+    printf("╠════════════════════════════════════════╣\n");
 
     char buf[50];
 
-    sprintf(buf, "시작 점수 : %d 코인", score);
+    //sprintf(buf, "시작 점수 : %d 코인", score);
     int padLeft = (boxWidth - 2 - (int)strlen(buf)) / 2;
     int padRight = boxWidth - 2 - (int)strlen(buf) - padLeft;
-    x = centerX("║                                        ║");
-    moveCursor(x, topY + 3);
-    printf("║%*s%s%*s║", padLeft, "", buf, padRight, "");
-
-    sprintf(buf, "행운의 부적 : %d 개", getLuckyCharmCount());
+    printf("║                                        ║");
+    moveCursor(11, topY + 3);
+    printf("시작 점수 : %d 스코어",score);
+    //printf("║%*s%s%*s║", padLeft, "", buf, padRight, "");
+    moveCursor(0,topY+4);
+    printf("║                                        ║");
+    //sprintf(buf, "행운의 부적 : %d 개", getLuckyCharmCount());
+    moveCursor(12,topY+4);
+    printf("행운의 부적 : %d 개", getLuckyCharmCount());
     padLeft = (boxWidth - 2 - (int)strlen(buf)) / 2;
     padRight = boxWidth - 2 - (int)strlen(buf) - padLeft;
-    x = centerX("║                                        ║");
-    moveCursor(x, topY + 4);
-    printf("║%*s%s%*s║", padLeft, "", buf, padRight, "");
+    //moveCursor(x, topY + 4);
+    //printf("║%*s%s%*s║", padLeft, "", buf, padRight, "");
 
-    x = centerX("╚════════════════════════════════════════╝");
-    moveCursor(x, topY + 5);
+    //x = centerX("╚════════════════════════════════════════╝");
+    moveCursor(0, topY + 5);
     printf("╚════════════════════════════════════════╝");
 }
 
@@ -90,7 +91,8 @@ void spinAnimation(int* s1, int* s2, int* s3, int useCharm, int topY) {
 
     int temp1 = 0, temp2 = 0, temp3 = 0;
 
-    int x = centerX("┌────────┬────────┬────────┐");
+    //int x = centerX("┌────────┬────────┬────────┐");
+    int x = 3;
     moveCursor(x, topY);     printf("┌────────┬────────┬────────┐");
     moveCursor(x, topY + 1); printf("│        │        │        │");
     moveCursor(x, topY + 2); printf("└────────┴────────┴────────┘");
@@ -124,7 +126,7 @@ void runSlotMachine() {
 
     int bet, s1, s2, s3;
     char input[20];
-    int topY = 3;
+    int topY = 0;
 
     printSlotHeader(topY);
 
@@ -162,7 +164,7 @@ void runSlotMachine() {
 
     spinAnimation(&s1, &s2, &s3, useCharm, topY + 10);
 
-    moveCursor(0, topY + 14); printf("                                      ");
+    moveCursor(0, topY + 14); //printf("                                      ");
     if (s1 == s2 && s2 == s3) {
         printf("JACKPOT! 점수 %d 증가", bet * 5);
         score += bet * 5;
